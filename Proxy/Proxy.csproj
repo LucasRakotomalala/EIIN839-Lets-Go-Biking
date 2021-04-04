@@ -52,6 +52,7 @@
     <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.5.0.0\lib\net45\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
@@ -74,10 +75,12 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cache\Cache.cs" />
+    <Compile Include="Models\JCDecaux\JCDecauxItem.cs" />
     <Compile Include="Services\IJCDecaux.cs" />
-    <Compile Include="Models\City.cs" />
-    <Compile Include="Models\Position.cs" />
-    <Compile Include="Models\Station.cs" />
+    <Compile Include="Models\JCDecaux\City.cs" />
+    <Compile Include="Models\JCDecaux\Position.cs" />
+    <Compile Include="Models\JCDecaux\Station.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\JCDecaux.cs" />
   </ItemGroup>
@@ -85,6 +88,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <VSToolsPath Condition="'$(VSToolsPath)' == '' and '$(VisualStudioVersion)' != '' and '$(VisualStudioVersion)' != '11.0'">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
