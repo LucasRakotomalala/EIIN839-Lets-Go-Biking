@@ -6,6 +6,12 @@
 
 ## Architecture
 
+### Diagramme
+
+<img src="resources/Diagramme d'architecture.png" alt="Diagramme d'architecture" style="margin: auto;"/>
+
+### Implémentation
+
 * [`HeavyClient`](HeavyClient)
 
 * [`LightClient`](LightClient)
