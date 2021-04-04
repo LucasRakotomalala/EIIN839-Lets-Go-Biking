@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using HeavyClient.JCDecaux;
+using System;
 
 namespace HeavyClient
 {
@@ -10,7 +7,14 @@ namespace HeavyClient
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            JCDecauxClient client = new JCDecauxClient();
+
+            foreach (var station in client.GetAllStationsFromCity("lyon"))
+                Console.WriteLine(station.address);
+
+            client.Close();
+
+            Console.ReadLine();
         }
     }
 }

@@ -9,8 +9,8 @@ namespace Proxy
     public interface IJCDecaux
     {
         [OperationContract]
-        [WebInvoke(Method = "GET", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.WrappedRequest, UriTemplate = "stations?city={city}")]
-        List<Station> GetAllStationsFromCity(string city);
+        [WebInvoke(Method = "GET", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Xml, BodyStyle = WebMessageBodyStyle.WrappedRequest, UriTemplate = "stations?city={city}")]
+        List<JCDecauxItem.Station> GetAllStationsFromCity(string city);
 
     }
 }

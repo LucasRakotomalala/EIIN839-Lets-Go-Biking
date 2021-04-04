@@ -10,10 +10,10 @@ namespace Proxy
         private static readonly string DATA = "stations";
         private static readonly string API_KEY = "ff987c28b1313700e2c97651cec164bd6cb4ed76";
 
-        private Cache<List<Station>> stations = new Cache<List<Station>>();
+        private Cache<List<JCDecauxItem.Station>> stations = new Cache<List<JCDecauxItem.Station>>();
         private readonly double EXPIRATION_TIME = 30;
 
-        List<Station> IJCDecaux.GetAllStationsFromCity(string city)
+        List<JCDecauxItem.Station> IJCDecaux.GetAllStationsFromCity(string city)
         {
             return stations.Get(URL + DATA + "?contract=" + city + "&apiKey=" + API_KEY, EXPIRATION_TIME);
         }
