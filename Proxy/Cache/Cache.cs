@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Net.Http;
+using System.Collections.Generic;
 using System.Runtime.Caching;
-using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace Proxy.Cache
 {
-    public class Cache<T> where T : new()
+    public class Cache<T> : ICache<T> where T : new()
     {
         private ObjectCache cache;
         private DateTimeOffset dt_default { get; set; }
-
-        private static readonly HttpClient client = new HttpClient();
 
         public Cache()
         {
@@ -19,17 +15,17 @@ namespace Proxy.Cache
             dt_default = ObjectCache.InfiniteAbsoluteExpiration;
         }
 
-        public T Get(string CacheItem)
+        public T Get(string CacheItem, Dictionary<string, string> dictionary)
         {
-            return Get(CacheItem, dt_default);
+            return Get(CacheItem, dt_default, dictionary);
         }
 
-        public T Get(string CacheItem, double dt_seconds)
+        public T Get(string CacheItem, double dt_seconds, Dictionary<string, string> dictionary)
         {
-            return Get(CacheItem, DateTimeOffset.Now.AddSeconds(dt_seconds));
+            return Get(CacheItem, DateTimeOffset.Now.AddSeconds(dt_seconds), dictionary);
         }
 
-        public T Get(string CacheItem, DateTimeOffset dt)
+        public T Get(string CacheItem, DateTimeOffset dt, Dictionary<string, string> dictionary)
         {
             if (cache.Get(CacheItem) == null)
             {
@@ -37,26 +33,12 @@ namespace Proxy.Cache
                 {
                     AbsoluteExpiration = dt
                 };
-                cache.Add(CacheItem, CallAPI(CacheItem).Result, cacheItemPolicy);
+                if (dictionary == null)
+                    cache.Add(CacheItem, new T(), cacheItemPolicy);
+                else
+                    cache.Add(CacheItem, (T) Activator.CreateInstance(typeof(T), dictionary), cacheItemPolicy);
             }
             return (T) cache.Get(CacheItem);
-        }
-
-        private static async Task<T> CallAPI(string request)
-        {
-            System.Diagnostics.Debug.WriteLine("CallAPI");
-            try
-            {
-                HttpResponseMessage response = await client.GetAsync(request);
-                response.EnsureSuccessStatusCode();
-                string responseBody = await response.Content.ReadAsStringAsync();
-
-                return JsonSerializer.Deserialize<T>(responseBody);
-            }
-            catch (HttpRequestException)
-            {
-                return new T();
-            }
         }
     }
 }

@@ -55,7 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Connected Services\JCDecaux\HeavyClient.JCDecaux.JCDecauxItemStation.datasource">
+    <None Include="Connected Services\JCDecaux\HeavyClient.JCDecaux.JCDecauxItem.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Connected Services\JCDecaux\item.xsd">

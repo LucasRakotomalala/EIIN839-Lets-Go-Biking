@@ -7,10 +7,13 @@ namespace HeavyClient
     {
         static void Main(string[] args)
         {
-            JCDecauxClient client = new JCDecauxClient();
+            JCDecauxClient client = new JCDecauxClient("SOAPEndPoint");
 
-            foreach (var station in client.GetAllStationsFromCity("lyon"))
-                Console.WriteLine(station.address);
+            //JCDecauxItem item = client.GetAllStations();
+            JCDecauxItem itemLyon = client.GetAllStationsFromCity("lyon");
+
+            foreach (var station in itemLyon.stations)
+                Console.WriteLine(station.position.latitude + " " + station.position.longitude);
 
             client.Close();
 

@@ -1,13 +1,51 @@
 ﻿using System.Collections.Generic;
+using System.Net.Http;
 using System.Runtime.Serialization;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace Proxy.Models
 {
     [DataContract]
     public class JCDecauxItem
     {
+        private static readonly string URL = "https://api.jcdecaux.com/vls/v2/";
+        private static readonly string DATA = "stations";
+        private static readonly string API_KEY = "ff987c28b1313700e2c97651cec164bd6cb4ed76";
+
+        private static readonly HttpClient client = new HttpClient();
+
+        private string request;
         [DataMember]
         public List<Station> stations { get; set; }
+
+        public JCDecauxItem()
+        {
+            request = URL + DATA + "?apiKey=" + API_KEY;
+            stations = CallAPI(request).Result;
+        }
+
+        public JCDecauxItem(Dictionary<string, string> dictionary)
+        {
+            request = URL + DATA + "?contract=" + dictionary["city"] + "&apiKey=" + API_KEY;
+            stations = CallAPI(request).Result;
+        }
+
+        private static async Task<List<Station>> CallAPI(string request)
+        {
+            try
+            {
+                HttpResponseMessage response = await client.GetAsync(request);
+                response.EnsureSuccessStatusCode();
+                string responseBody = await response.Content.ReadAsStringAsync();
+
+                return JsonSerializer.Deserialize<List<Station>>(responseBody);
+            }
+            catch (HttpRequestException)
+            {
+                return new List<Station>();
+            }
+        }
 
         [DataContract]
         public class Station

@@ -1,7 +1,7 @@
 ﻿using Proxy.Models;
-using System.Collections.Generic;
 using System.ServiceModel;
 using System.ServiceModel.Web;
+using static Proxy.Models.JCDecauxItem;
 
 namespace Proxy
 {
@@ -9,8 +9,16 @@ namespace Proxy
     public interface IJCDecaux
     {
         [OperationContract]
-        [WebInvoke(Method = "GET", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Xml, BodyStyle = WebMessageBodyStyle.WrappedRequest, UriTemplate = "stations?city={city}")]
-        List<JCDecauxItem.Station> GetAllStationsFromCity(string city);
+        [WebInvoke(Method = "GET", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.WrappedRequest, UriTemplate = "stations")]
+        JCDecauxItem GetAllStations();
+
+        [OperationContract]
+        [WebInvoke(Method = "GET", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.WrappedRequest, UriTemplate = "stations?city={city}")]
+        JCDecauxItem GetAllStationsFromCity(string city);
+
+        [OperationContract]
+        [WebInvoke(Method = "GET", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.WrappedRequest, UriTemplate = "nearestStation?lat={latitude}&lng={longitude}")] 
+        Station FindNearestStation(double latitude, double longitude);
 
     }
 }

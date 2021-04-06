@@ -14,6 +14,6 @@
 
 * [`HeavyClient`](HeavyClient)
 
-* [`LightClient`](LightClient)
+* [`LightClient`](LightClient) : http://map.project-osrm.org/
 
 * [`Proxy`](Proxy)

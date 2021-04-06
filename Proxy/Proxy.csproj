@@ -44,6 +44,7 @@
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Device" />
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
     </Reference>
@@ -76,6 +77,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cache\Cache.cs" />
+    <Compile Include="Cache\ICache.cs" />
     <Compile Include="Models\JCDecauxItem.cs" />
     <Compile Include="Services\IJCDecaux.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
