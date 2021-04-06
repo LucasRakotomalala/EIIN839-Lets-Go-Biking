@@ -17,3 +17,7 @@
 * [`LightClient`](LightClient) : http://map.project-osrm.org/
 
 * [`Proxy`](Proxy)
+
+* [`ProxyHost`](ProxyHost) : projet dans lequel on expose une version dockerisé du proxy fonctionnel.
+
+https://devblogs.microsoft.com/aspnet/lets-try-wcf-self-hosted-services-in-a-container/ + ajout de dns dans Docker Engine

@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HeavyClient", "HeavyClient\
 		{80242D96-EE01-4210-BB7B-256A1D9C3073} = {80242D96-EE01-4210-BB7B-256A1D9C3073}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProxyHost", "ProxyHost\ProxyHost.csproj", "{241ECA56-14D6-41DA-B0F9-CD01D539E6DF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,6 +26,10 @@ Global
 		{0B9FF8E5-3F42-4411-8AD8-75A148BAFFCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B9FF8E5-3F42-4411-8AD8-75A148BAFFCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B9FF8E5-3F42-4411-8AD8-75A148BAFFCD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{241ECA56-14D6-41DA-B0F9-CD01D539E6DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{241ECA56-14D6-41DA-B0F9-CD01D539E6DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{241ECA56-14D6-41DA-B0F9-CD01D539E6DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{241ECA56-14D6-41DA-B0F9-CD01D539E6DF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
