@@ -1,8 +1,10 @@
+#!/bin/bash
+
 # Pull the image first, the one used in ProxyHost Dockerfile
-docker pull mcr.microsoft.com/dotnet/framework/wcf:4.8
+#docker pull mcr.microsoft.com/dotnet/framework/wcf:4.8
 
 # Create the image
-docker build -t wcfhost:lastest .
+docker build -t wcfhost .
 
 # Run the container
 docker run -itd --name ProxyHost wcfhost

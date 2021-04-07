@@ -12,7 +12,7 @@ namespace Proxy
             host.Open();
 
             Console.WriteLine("The service is ready at {0}", host.BaseAddresses[0]);
-            Console.WriteLine("Press any key to close ...");
+            //Console.WriteLine("Press any key to close ...");
             Console.ReadLine();
 
             host.Close();
