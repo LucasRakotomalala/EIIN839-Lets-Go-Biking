@@ -12,6 +12,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HeavyClient", "HeavyClient\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProxyHost", "ProxyHost\ProxyHost.csproj", "{241ECA56-14D6-41DA-B0F9-CD01D539E6DF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Routing", "Routing\Routing.csproj", "{F5F13283-8999-446A-8D22-5205D2298B00}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Host", "Host\Host.csproj", "{036BE0A7-B643-41AB-A18B-2CCF01F58974}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +34,14 @@ Global
 		{241ECA56-14D6-41DA-B0F9-CD01D539E6DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{241ECA56-14D6-41DA-B0F9-CD01D539E6DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{241ECA56-14D6-41DA-B0F9-CD01D539E6DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5F13283-8999-446A-8D22-5205D2298B00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5F13283-8999-446A-8D22-5205D2298B00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5F13283-8999-446A-8D22-5205D2298B00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5F13283-8999-446A-8D22-5205D2298B00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{036BE0A7-B643-41AB-A18B-2CCF01F58974}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{036BE0A7-B643-41AB-A18B-2CCF01F58974}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{036BE0A7-B643-41AB-A18B-2CCF01F58974}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{036BE0A7-B643-41AB-A18B-2CCF01F58974}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

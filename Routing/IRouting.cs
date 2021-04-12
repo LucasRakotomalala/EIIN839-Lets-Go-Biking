@@ -1,20 +1,23 @@
-﻿using Proxy.Models;
+﻿using System.Collections.Generic;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using static Proxy.Models.JCDecauxItem;
 
-namespace Proxy
+namespace Routing
 {
     [ServiceContract]
-    public interface IJCDecaux
+    public interface IRouting
     {
         [OperationContract]
         [WebInvoke(Method = "GET", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.WrappedRequest, UriTemplate = "stations")]
-        JCDecauxItem GetAllStations();
+        List<Station> GetAllStations();
 
         [OperationContract]
         [WebInvoke(Method = "GET", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.WrappedRequest, UriTemplate = "stations?city={city}")]
-        JCDecauxItem GetAllStationsFromCity(string city);
+        List<Station> GetAllStationsFromCity(string city);
 
+        [OperationContract]
+        [WebInvoke(Method = "GET", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.WrappedRequest, UriTemplate = "nearestStation?lat={latitude}&lng={longitude}")]
+        Station FindNearestStation(double latitude, double longitude);
     }
 }

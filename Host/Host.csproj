@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{241ECA56-14D6-41DA-B0F9-CD01D539E6DF}</ProjectGuid>
+    <ProjectGuid>{036BE0A7-B643-41AB-A18B-2CCF01F58974}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>ProxyHost</RootNamespace>
-    <AssemblyName>ProxyHost</AssemblyName>
+    <RootNamespace>Host</RootNamespace>
+    <AssemblyName>Host</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -36,7 +36,6 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.ServiceModel" />
-    <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -55,6 +54,10 @@
     <ProjectReference Include="..\Proxy\Proxy.csproj">
       <Project>{80242d96-ee01-4210-bb7b-256a1d9c3073}</Project>
       <Name>Proxy</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Routing\Routing.csproj">
+      <Project>{f5f13283-8999-446a-8d22-5205d2298b00}</Project>
+      <Name>Routing</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
