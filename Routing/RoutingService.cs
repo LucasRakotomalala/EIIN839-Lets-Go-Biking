@@ -41,7 +41,7 @@ namespace Routing
         public Position GetPosition(string address)
         {
             string request = "https://nominatim.openstreetmap.org/search?email=lucas.rakotomalala@etu.univ-cotedazur.fr&format=json&q=" + address;
-            List<Place> places = CallOSMPlaces(request.Replace(",", ".")).Result;
+            List<Place> places = CallOSMPlaces(request).Result;
 
             Place bestPlace = places[0];
 
@@ -53,13 +53,11 @@ namespace Routing
                 }
             }
 
-            Position position = new Position
+            return new Position
             {
                 latitude = bestPlace.lat,
                 longitude = bestPlace.lon
-            };
-
-            return position;
+            }; ;
         }
 
         public string GetPath(double latitudeStart, double longitudeStart, double latitudeEnd, double longitudeEnd)
