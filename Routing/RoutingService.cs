@@ -1,7 +1,9 @@
 ﻿using Proxy.Models;
 using Routing.Models;
+using System;
 using System.Collections.Generic;
 using System.Device.Location;
+using System.Linq;
 using System.Net.Http;
 using System.ServiceModel.Web;
 using System.Text.Json;
@@ -42,8 +44,7 @@ namespace Routing
         {
             string request = "https://nominatim.openstreetmap.org/search?email=lucas.rakotomalala@etu.univ-cotedazur.fr&format=json&q=" + address;
             List<Place> places = CallOSMPlaces(request).Result;
-
-            Place bestPlace = places[0];
+            Place bestPlace = places.ElementAt(0);
 
             foreach (Place place in places)
             {
@@ -55,8 +56,8 @@ namespace Routing
 
             return new Position
             {
-                latitude = bestPlace.lat,
-                longitude = bestPlace.lon
+                latitude = Convert.ToDouble(bestPlace.lat.Replace(".", ",")),
+                longitude = Convert.ToDouble(bestPlace.lon.Replace(".", ","))
             }; ;
         }
 
@@ -75,7 +76,7 @@ namespace Routing
             List<Station> stations = GetAllStationsFromCity(GetCityName(latitude, longitude));
 
             GeoCoordinate userPosition = new GeoCoordinate(latitude, longitude);
-            Station nearestStation = stations[0];
+            Station nearestStation = stations.ElementAt(0);
             double distance = double.MaxValue;
 
             foreach (Station station in stations)
@@ -95,7 +96,7 @@ namespace Routing
             List<Station> stations = GetAllStationsFromCity(GetCityName(latitude, longitude));
 
             GeoCoordinate userPosition = new GeoCoordinate(latitude, longitude);
-            Station nearestStation = stations[0];
+            Station nearestStation = stations.ElementAt(0);
             double distance = double.MaxValue;
 
             foreach (Station station in stations)

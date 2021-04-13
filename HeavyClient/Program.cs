@@ -8,12 +8,25 @@ namespace HeavyClient
         static void Main(string[] args)
         {
             RoutingClient client = new RoutingClient("SOAPEndPoint");
+            Console.Write("Adresse de départ : ");
+            string startAddress = Console.ReadLine().Replace(" ", "+");
 
-            //JCDecauxItem item = client.GetAllStations();
-            var itemLyon = client.GetAllStationsFromCity("lyon");
+            Console.Write("Adresse d'arrivée : ");
+            string endAddress = Console.ReadLine().Replace(" ", "+");
 
-            foreach (var station in itemLyon)
-                Console.WriteLine(station.position.latitude + " " + station.position.longitude);
+            var startAddressPosition = client.GetPosition(startAddress);
+            var endAddressPosition = client.GetPosition(endAddress);
+
+            var nearestStationFromStartPosition = client.FindNearestStationFromStart(startAddressPosition.latitude, startAddressPosition.longitude);
+            var nearestStationFromEndPosition = client.FindNearestStationFromEnd(endAddressPosition.latitude, endAddressPosition.longitude);
+
+            var pathStartToNearestStartStation = client.GetPath(startAddressPosition.latitude, startAddressPosition.longitude, nearestStationFromStartPosition.position.latitude, nearestStationFromStartPosition.position.longitude); ;
+            var pathStationStartToStationEnd = client.GetPath(nearestStationFromStartPosition.position.latitude, nearestStationFromStartPosition.position.longitude, nearestStationFromEndPosition.position.latitude, nearestStationFromEndPosition.position.longitude);
+            var pathNearestEndStationToEnd = client.GetPath(nearestStationFromEndPosition.position.latitude, nearestStationFromEndPosition.position.longitude, endAddressPosition.latitude, endAddressPosition.longitude);
+
+            Console.WriteLine(pathStartToNearestStartStation);
+            Console.WriteLine(pathStationStartToStationEnd);
+            Console.WriteLine(pathNearestEndStationToEnd);
 
             client.Close();
 

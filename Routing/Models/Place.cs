@@ -7,9 +7,9 @@ namespace Routing.Models
     {
         public string display_name { get; set; }
 
-        public double lat { get; set; }
+        public string lat { get; set; }
 
-        public double lon { get; set; }
+        public string lon { get; set; }
 
         public double importance { get; set; }
     }
