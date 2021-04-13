@@ -1,6 +1,7 @@
 ﻿using Proxy.Cache;
 using Proxy.Models;
 using System.Collections.Generic;
+using System.Runtime.Caching;
 
 namespace Proxy
 {
@@ -9,11 +10,11 @@ namespace Proxy
         private static readonly string KEY = "stations";
 
         private Cache<JCDecauxItem> cache = new Cache<JCDecauxItem>();
-        private readonly double EXPIRATION_TIME = 30;
+        private readonly double EXPIRATION_TIME = 60;
 
         public JCDecauxItem GetAllStations()
         {
-            return cache.Get(KEY, EXPIRATION_TIME, null);
+            return cache.Get(KEY, ObjectCache.InfiniteAbsoluteExpiration, null);
         }
 
         public JCDecauxItem GetAllStationsFromCity(string city)

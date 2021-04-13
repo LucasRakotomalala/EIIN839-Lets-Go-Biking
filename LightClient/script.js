@@ -1,6 +1,15 @@
 let map;
+
+let path = null;
+
+let defaultPosition = {
+    latitude: 45.764043,
+    longitude: 4.835659
+};
+
 let currentPosition;
 let currentMarker;
+
 let stations;
 
 navigator.geolocation.watchPosition(
@@ -26,18 +35,18 @@ window.onload = () => {
             constructMap(map);
         }, error => {
             if (error.code == error.PERMISSION_DENIED) {
-                map = L.map('map').setView([45.764043, 4.835659], 14); // Position de Lyon
+                map = L.map('map').setView([defaultPosition.latitude, defaultPosition.longitude], 14); // Position de Lyon
                 constructMap(map);
             }
         })
     } else {
-        map = L.map('map').setView([45.764043, 4.835659], 14); // Position de Lyon
+        map = L.map('map').setView([defaultPosition.latitude, defaultPosition.longitude], 14); // Position de Lyon
         constructMap(map);
     }
 }
 
 const retrieveStations = () => {
-    const targetUrl = "https://api.jcdecaux.com/vls/v2/stations?apiKey=ff987c28b1313700e2c97651cec164bd6cb4ed76";
+    const targetUrl = "http://localhost:8080/api/stations";
     const requestType = "GET";
 
     const caller = new XMLHttpRequest();
@@ -77,5 +86,19 @@ String.prototype.capitalize = () => {
 }
 
 const goTo = (latitude, longitude) => {
-    console.log(latitude, longitude);
+    if (path !== null) {
+        map.removeLayer(path);
+    }
+
+    const targetUrl = "http://localhost:8080/api/path?startLat=" + defaultPosition.latitude + "&startLng=" + defaultPosition.longitude + "&endLat=" + latitude + "&endLng=" + longitude;
+    const requestType = "GET";
+
+    const caller = new XMLHttpRequest();
+    caller.open(requestType, targetUrl, true);
+    caller.setRequestHeader("Accept", "application/json");
+    caller.onload = () => {
+        const response = JSON.parse(caller.responseText);
+        path = L.geoJSON(JSON.parse(response)).addTo(map);
+    }
+    caller.send();
 }
