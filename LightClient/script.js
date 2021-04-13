@@ -81,10 +81,6 @@ const showMarkers = () => {
     map.addLayer(markersCluster);
 }
 
-String.prototype.capitalize = () => {
-    return this.charAt(0).toUpperCase() + this.slice(1);
-}
-
 const getPath = (latitudeStart, longitudeStart, latitudeEnd, longitudeEnd) => {
     if (path !== null) {
         map.removeLayer(path);
