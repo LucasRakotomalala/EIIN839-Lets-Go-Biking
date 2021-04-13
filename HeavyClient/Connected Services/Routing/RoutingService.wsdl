@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="RoutingService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Proxy.Models" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IRouting_GetAllStations_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllStations" />
+  </wsdl:message>
+  <wsdl:message name="IRouting_GetAllStations_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllStationsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IRouting_GetAllStationsFromCity_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllStationsFromCity" />
+  </wsdl:message>
+  <wsdl:message name="IRouting_GetAllStationsFromCity_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllStationsFromCityResponse" />
+  </wsdl:message>
+  <wsdl:message name="IRouting_GetCityName_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetCityName" />
+  </wsdl:message>
+  <wsdl:message name="IRouting_GetCityName_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetCityNameResponse" />
+  </wsdl:message>
+  <wsdl:message name="IRouting_GetPosition_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetPosition" />
+  </wsdl:message>
+  <wsdl:message name="IRouting_GetPosition_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetPositionResponse" />
+  </wsdl:message>
+  <wsdl:message name="IRouting_GetPath_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetPath" />
+  </wsdl:message>
+  <wsdl:message name="IRouting_GetPath_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetPathResponse" />
+  </wsdl:message>
+  <wsdl:message name="IRouting_FindNearestStationFromStart_InputMessage">
+    <wsdl:part name="parameters" element="tns:FindNearestStationFromStart" />
+  </wsdl:message>
+  <wsdl:message name="IRouting_FindNearestStationFromStart_OutputMessage">
+    <wsdl:part name="parameters" element="tns:FindNearestStationFromStartResponse" />
+  </wsdl:message>
+  <wsdl:message name="IRouting_FindNearestStationFromEnd_InputMessage">
+    <wsdl:part name="parameters" element="tns:FindNearestStationFromEnd" />
+  </wsdl:message>
+  <wsdl:message name="IRouting_FindNearestStationFromEnd_OutputMessage">
+    <wsdl:part name="parameters" element="tns:FindNearestStationFromEndResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IRouting">
+    <wsdl:operation name="GetAllStations">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRouting/GetAllStations" message="tns:IRouting_GetAllStations_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRouting/GetAllStationsResponse" message="tns:IRouting_GetAllStations_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllStationsFromCity">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRouting/GetAllStationsFromCity" message="tns:IRouting_GetAllStationsFromCity_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRouting/GetAllStationsFromCityResponse" message="tns:IRouting_GetAllStationsFromCity_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCityName">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRouting/GetCityName" message="tns:IRouting_GetCityName_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRouting/GetCityNameResponse" message="tns:IRouting_GetCityName_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPosition">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRouting/GetPosition" message="tns:IRouting_GetPosition_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRouting/GetPositionResponse" message="tns:IRouting_GetPosition_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPath">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRouting/GetPath" message="tns:IRouting_GetPath_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRouting/GetPathResponse" message="tns:IRouting_GetPath_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FindNearestStationFromStart">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRouting/FindNearestStationFromStart" message="tns:IRouting_FindNearestStationFromStart_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRouting/FindNearestStationFromStartResponse" message="tns:IRouting_FindNearestStationFromStart_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FindNearestStationFromEnd">
+      <wsdl:input wsaw:Action="http://tempuri.org/IRouting/FindNearestStationFromEnd" message="tns:IRouting_FindNearestStationFromEnd_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IRouting/FindNearestStationFromEndResponse" message="tns:IRouting_FindNearestStationFromEnd_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="SOAPEndPoint" type="tns:IRouting">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetAllStations">
+      <soap:operation soapAction="http://tempuri.org/IRouting/GetAllStations" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllStationsFromCity">
+      <soap:operation soapAction="http://tempuri.org/IRouting/GetAllStationsFromCity" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCityName">
+      <soap:operation soapAction="http://tempuri.org/IRouting/GetCityName" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPosition">
+      <soap:operation soapAction="http://tempuri.org/IRouting/GetPosition" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPath">
+      <soap:operation soapAction="http://tempuri.org/IRouting/GetPath" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FindNearestStationFromStart">
+      <soap:operation soapAction="http://tempuri.org/IRouting/FindNearestStationFromStart" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FindNearestStationFromEnd">
+      <soap:operation soapAction="http://tempuri.org/IRouting/FindNearestStationFromEnd" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="RoutingService">
+    <wsdl:port name="SOAPEndPoint" binding="tns:SOAPEndPoint">
+      <soap:address location="http://localhost:8080/JCDecaux/" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

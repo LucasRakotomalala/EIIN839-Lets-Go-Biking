@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="p4pNjswsCNh7xGYcAHuCQDDyoJgjwthg7ZORsLTmvM8=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="yUYlP+yEaPaG5PHIC8G9vwUaB2BP8HBMngL3A63TZxI=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="basicHttpBinding" name="SOAPEndPoint">
       <properties>
@@ -112,10 +112,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="SOAPEndPoint" contract="JCDecaux.IJCDecaux" bindingType="basicHttpBinding" address="http://localhost:8733/JCDecaux/" bindingConfiguration="SOAPEndPoint">
+    <endpoint name="SOAPEndPoint" contract="Routing.IRouting" bindingType="basicHttpBinding" address="http://localhost:8080/JCDecaux/" bindingConfiguration="SOAPEndPoint">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://localhost:8733/JCDecaux/</serializedValue>
+          <serializedValue>http://localhost:8080/JCDecaux/</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
@@ -127,7 +127,7 @@
           <serializedValue>SOAPEndPoint</serializedValue>
         </property>
         <property path="/contract" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>JCDecaux.IJCDecaux</serializedValue>
+          <serializedValue>Routing.IRouting</serializedValue>
         </property>
         <property path="/headers" isComplexType="true" isExplicitlyDefined="false" clrType="System.ServiceModel.Configuration.AddressHeaderCollectionElement, System.ServiceModel, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>System.ServiceModel.Configuration.AddressHeaderCollectionElement</serializedValue>

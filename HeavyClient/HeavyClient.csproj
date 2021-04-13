@@ -45,7 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Connected Services\JCDecaux\Reference.cs">
+    <Compile Include="Connected Services\Routing\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -55,34 +55,37 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Connected Services\JCDecaux\HeavyClient.JCDecaux.JCDecauxItem.datasource">
+    <None Include="Connected Services\Routing\HeavyClient.Routing.JCDecauxItemPosition.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Connected Services\JCDecaux\item.xsd">
+    <None Include="Connected Services\Routing\HeavyClient.Routing.JCDecauxItemStation.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\Routing\item.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\JCDecaux\item1.xsd">
+    <None Include="Connected Services\Routing\item1.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\JCDecaux\item2.xsd">
+    <None Include="Connected Services\Routing\item2.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\JCDecaux\JCDecaux.wsdl" />
+    <None Include="Connected Services\Routing\RoutingService.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Connected Services\JCDecaux\" />
+    <WCFMetadataStorage Include="Connected Services\Routing\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Connected Services\JCDecaux\configuration91.svcinfo" />
+    <None Include="Connected Services\Routing\configuration91.svcinfo" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Connected Services\JCDecaux\configuration.svcinfo" />
+    <None Include="Connected Services\Routing\configuration.svcinfo" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Connected Services\JCDecaux\Reference.svcmap">
+    <None Include="Connected Services\Routing\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>

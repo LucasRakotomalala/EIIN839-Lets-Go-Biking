@@ -1,4 +1,4 @@
-﻿using HeavyClient.JCDecaux;
+﻿using HeavyClient.Routing;
 using System;
 
 namespace HeavyClient
@@ -7,12 +7,12 @@ namespace HeavyClient
     {
         static void Main(string[] args)
         {
-            JCDecauxClient client = new JCDecauxClient("SOAPEndPoint");
+            RoutingClient client = new RoutingClient("SOAPEndPoint");
 
             //JCDecauxItem item = client.GetAllStations();
-            JCDecauxItem itemLyon = client.GetAllStationsFromCity("lyon");
+            var itemLyon = client.GetAllStationsFromCity("lyon");
 
-            foreach (var station in itemLyon.stations)
+            foreach (var station in itemLyon)
                 Console.WriteLine(station.position.latitude + " " + station.position.longitude);
 
             client.Close();
