@@ -22,6 +22,11 @@ namespace Routing
         [WebInvoke(Method = "GET", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.WrappedRequest, UriTemplate = "reverse?lat={latitude}&lng={longitude}")]
         string GetCityName(double latitude, double longitude);
 
+        /* OpenStreetMap Search */
+        [OperationContract]
+        [WebInvoke(Method = "GET", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.WrappedRequest, UriTemplate = "position?address={address}")]
+        Position GetPosition(string address);
+
         /* OpenRouteService Directions */
         [OperationContract]
         [WebInvoke(Method = "GET", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.WrappedRequest, UriTemplate = "path?startLat={latitudeStart}&startLng={longitudeStart}&endLat={latitudeEnd}&endLng={longitudeEnd}")]
@@ -29,7 +34,11 @@ namespace Routing
 
         /* Calculation */
         [OperationContract]
-        [WebInvoke(Method = "GET", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.WrappedRequest, UriTemplate = "nearestStation?lat={latitude}&lng={longitude}")]
-        Station FindNearestStation(double latitude, double longitude);
+        [WebInvoke(Method = "GET", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.WrappedRequest, UriTemplate = "nearestStartStation?lat={latitude}&lng={longitude}")]
+        Station FindNearestStationFromStart(double latitude, double longitude);
+
+        [OperationContract]
+        [WebInvoke(Method = "GET", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.WrappedRequest, UriTemplate = "nearestEndStation?lat={latitude}&lng={longitude}")]
+        Station FindNearestStationFromEnd(double latitude, double longitude);
     }
 }

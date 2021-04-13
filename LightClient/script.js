@@ -74,7 +74,7 @@ const showMarkers = () => {
     stations.forEach(station => {
         markersCluster.addLayer(L
             .marker([station.position.latitude, station.position.longitude], { title: station.address })
-            .bindPopup(`<b>` + station.address + `</b><br>` + `<a href='javascript:goTo(${station.position.latitude}, ${station.position.longitude});'>S'y rendre </a>`)
+            .bindPopup(`<b>` + station.address + `</b><br>` + `<a href='javascript:console.log(${station.position.latitude}, ${station.position.longitude});'>S'y rendre</a>`)
         );
     });
 
@@ -85,12 +85,15 @@ String.prototype.capitalize = () => {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
-const goTo = (latitude, longitude) => {
+const getPath = (latitudeStart, longitudeStart, latitudeEnd, longitudeEnd) => {
     if (path !== null) {
         map.removeLayer(path);
     }
 
-    const targetUrl = "http://localhost:8080/api/path?startLat=" + defaultPosition.latitude + "&startLng=" + defaultPosition.longitude + "&endLat=" + latitude + "&endLng=" + longitude;
+    const startStationPosition = findNearestStartStation(latitudeStart, longitudeStart);
+    const endStationPosition = findNearestEndStation(latitudeEnd, longitudeEnd);
+
+    const targetUrl = "http://localhost:8080/api/path?startLat=" + latitudeStart + "&startLng=" + longitudeStart + "&endLat=" + latitudeEnd + "&endLng=" + longitudeEnd;
     const requestType = "GET";
 
     const caller = new XMLHttpRequest();
@@ -101,4 +104,40 @@ const goTo = (latitude, longitude) => {
         path = L.geoJSON(JSON.parse(response)).addTo(map);
     }
     caller.send();
+}
+
+const findNearestStartStation = (latitude, longitude) => {
+    let position;
+
+    const targetUrl = "http://localhost:8080/api/nearestStartStation?lat=" + latitude + "&lng=" + longitude;
+    const requestType = "GET";
+
+    const caller = new XMLHttpRequest();
+    caller.open(requestType, targetUrl, true);
+    caller.setRequestHeader("Accept", "application/json");
+    caller.onload = () => {
+        const station = JSON.parse(caller.responseText);
+        position = station.position;
+    }
+    caller.send();
+
+    return position;
+}
+
+const findNearestEndStation = (latitude, longitude) => {
+    let position;
+
+    const targetUrl = "http://localhost:8080/api/nearestEndStation?lat=" + latitude + "&lng=" + longitude;
+    const requestType = "GET";
+
+    const caller = new XMLHttpRequest();
+    caller.open(requestType, targetUrl, true);
+    caller.setRequestHeader("Accept", "application/json");
+    caller.onload = () => {
+        const station = JSON.parse(caller.responseText);
+        position = station.position;
+    }
+    caller.send();
+
+    return position;
 }

@@ -1,6 +1,5 @@
 ﻿using Proxy.Models;
 using Routing.Models;
-using System;
 using System.Collections.Generic;
 using System.Device.Location;
 using System.Net.Http;
@@ -14,6 +13,8 @@ namespace Routing
     public class RoutingService : IRouting
     {
         private static readonly HttpClient client = new HttpClient();
+        private readonly int THRESHOLD_AVAILABLE_BIKES = 2;
+        private readonly int THRESHOLD_AVAILABLE_BIKES_STANDS = 2;
 
         public RoutingService()
         {
@@ -33,8 +34,32 @@ namespace Routing
         public string GetCityName(double latitude, double longitude)
         {
             string request = "https://nominatim.openstreetmap.org/reverse?email=lucas.rakotomalala@etu.univ-cotedazur.fr&zoom=10&format=json&lat=" + latitude + "&lon=" + longitude;
-            ReverseGeoCode reverseGeoCode = CallOSM(request.Replace(",", ".")).Result;
+            ReverseGeoCode reverseGeoCode = CallOSMReverse(request.Replace(",", ".")).Result;
             return reverseGeoCode.address.city;
+        }
+
+        public Position GetPosition(string address)
+        {
+            string request = "https://nominatim.openstreetmap.org/search?email=lucas.rakotomalala@etu.univ-cotedazur.fr&format=json&q=" + address;
+            List<Place> places = CallOSMPlaces(request.Replace(",", ".")).Result;
+
+            Place bestPlace = places[0];
+
+            foreach (Place place in places)
+            {
+                if (place.importance > bestPlace.importance)
+                {
+                    bestPlace = place;
+                }
+            }
+
+            Position position = new Position
+            {
+                latitude = bestPlace.lat,
+                longitude = bestPlace.lon
+            };
+
+            return position;
         }
 
         public string GetPath(double latitudeStart, double longitudeStart, double latitudeEnd, double longitudeEnd)
@@ -47,7 +72,7 @@ namespace Routing
             return CallORS(request).Result;
         }
 
-        public Station FindNearestStation(double latitude, double longitude)
+        public Station FindNearestStationFromStart(double latitude, double longitude)
         {
             List<Station> stations = GetAllStationsFromCity(GetCityName(latitude, longitude));
 
@@ -57,7 +82,27 @@ namespace Routing
 
             foreach (Station station in stations)
             {
-                if (userPosition.GetDistanceTo(new GeoCoordinate(station.position.latitude, station.position.longitude)) < distance)
+                if (userPosition.GetDistanceTo(new GeoCoordinate(station.position.latitude, station.position.longitude)) < distance && station.available_bikes >= THRESHOLD_AVAILABLE_BIKES)
+                {
+                    nearestStation = station;
+                    distance = userPosition.GetDistanceTo(new GeoCoordinate(station.position.latitude, station.position.longitude));
+                }
+            }
+
+            return nearestStation;
+        }
+
+        public Station FindNearestStationFromEnd(double latitude, double longitude)
+        {
+            List<Station> stations = GetAllStationsFromCity(GetCityName(latitude, longitude));
+
+            GeoCoordinate userPosition = new GeoCoordinate(latitude, longitude);
+            Station nearestStation = stations[0];
+            double distance = double.MaxValue;
+
+            foreach (Station station in stations)
+            {
+                if (userPosition.GetDistanceTo(new GeoCoordinate(station.position.latitude, station.position.longitude)) < distance && station.available_bike_stands >= THRESHOLD_AVAILABLE_BIKES_STANDS)
                 {
                     nearestStation = station;
                     distance = userPosition.GetDistanceTo(new GeoCoordinate(station.position.latitude, station.position.longitude));
@@ -83,7 +128,7 @@ namespace Routing
             }
         }
 
-        private static async Task<ReverseGeoCode> CallOSM(string request)
+        private static async Task<ReverseGeoCode> CallOSMReverse(string request)
         {
             try
             {
@@ -92,6 +137,22 @@ namespace Routing
                 string responseBody = await response.Content.ReadAsStringAsync();
 
                 return JsonSerializer.Deserialize<ReverseGeoCode>(responseBody);
+            }
+            catch (HttpRequestException)
+            {
+                return null;
+            }
+        }
+
+        private static async Task<List<Place>> CallOSMPlaces(string request)
+        {
+            try
+            {
+                HttpResponseMessage response = await client.GetAsync(request);
+                response.EnsureSuccessStatusCode();
+                string responseBody = await response.Content.ReadAsStringAsync();
+
+                return JsonSerializer.Deserialize<List<Place>>(responseBody);
             }
             catch (HttpRequestException)
             {
