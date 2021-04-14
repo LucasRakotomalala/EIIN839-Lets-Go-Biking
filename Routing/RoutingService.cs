@@ -1,5 +1,6 @@
 ﻿using Proxy.Models;
 using Routing.Models;
+using System;
 using System.Collections.Generic;
 using System.Device.Location;
 using System.Net.Http;
@@ -13,29 +14,19 @@ namespace Routing
     public class RoutingService : IRouting
     {
         private static readonly HttpClient client = new HttpClient();
+        private List<Station> allStations;
         private readonly int THRESHOLD_AVAILABLE_BIKES = 2;
         private readonly int THRESHOLD_AVAILABLE_BIKES_STANDS = 2;
 
         public RoutingService()
         {
+            allStations = CallJCDecaux("https://api.jcdecaux.com/vls/v2/stations?apiKey=ff987c28b1313700e2c97651cec164bd6cb4ed76").Result;
             WebOperationContext.Current.OutgoingResponse.Headers.Add("Access-Control-Allow-Origin", "*");
         }
 
         public List<Station> GetAllStations()
         {
-            return CallProxy("http://localhost:8733/API/JCDecaux/stations").Result;
-        }
-
-        public List<Station> GetAllStationsFromCity(string city)
-        {
-            return CallProxy("http://localhost:8733/API/JCDecaux/stations?city=" + city).Result;
-        }
-
-        public string GetCityName(double latitude, double longitude)
-        {
-            string request = "https://nominatim.openstreetmap.org/reverse?email=lucas.rakotomalala@etu.univ-cotedazur.fr&zoom=10&format=json&lat=" + latitude + "&lon=" + longitude;
-            ReverseGeoCode reverseGeoCode = CallOSMReverse(request.Replace(",", ".")).Result;
-            return reverseGeoCode.address.city;
+            return allStations;
         }
 
         public Position GetPosition(string address)
@@ -83,18 +74,20 @@ namespace Routing
 
         public Station FindNearestStationFromStart(double latitude, double longitude)
         {
-            List<Station> stations = GetAllStationsFromCity(GetCityName(latitude, longitude));
-
             GeoCoordinate userPosition = new GeoCoordinate(latitude, longitude);
             Station nearestStation = null;
             double distance = double.MaxValue;
 
-            foreach (Station station in stations)
+            foreach (Station station in allStations)
             {
-                if (userPosition.GetDistanceTo(new GeoCoordinate(station.position.latitude, station.position.longitude)) < distance && station.available_bikes >= THRESHOLD_AVAILABLE_BIKES)
+                if (userPosition.GetDistanceTo(new GeoCoordinate(station.position.latitude, station.position.longitude)) < distance)
                 {
-                    nearestStation = station;
-                    distance = userPosition.GetDistanceTo(new GeoCoordinate(station.position.latitude, station.position.longitude));
+                    Station potentialBestStation = CallProxy("https://api.jcdecaux.com/vls/v2/stations/" + station.number + "?contract=" + station.contract_name + "&apiKey=ff987c28b1313700e2c97651cec164bd6cb4ed76").Result;
+                    if (potentialBestStation.available_bikes >= THRESHOLD_AVAILABLE_BIKES)
+                    {
+                        nearestStation = potentialBestStation;
+                        distance = userPosition.GetDistanceTo(new GeoCoordinate(potentialBestStation.position.latitude, potentialBestStation.position.longitude));
+                    }
                 }
             }
 
@@ -103,25 +96,27 @@ namespace Routing
 
         public Station FindNearestStationFromEnd(double latitude, double longitude)
         {
-            List<Station> stations = GetAllStationsFromCity(GetCityName(latitude, longitude));
-
             GeoCoordinate userPosition = new GeoCoordinate(latitude, longitude);
             Station nearestStation = null;
             double distance = double.MaxValue;
 
-            foreach (Station station in stations)
+            foreach (Station station in allStations)
             {
-                if (userPosition.GetDistanceTo(new GeoCoordinate(station.position.latitude, station.position.longitude)) < distance && station.available_bike_stands >= THRESHOLD_AVAILABLE_BIKES_STANDS)
+                if (userPosition.GetDistanceTo(new GeoCoordinate(station.position.latitude, station.position.longitude)) < distance)
                 {
-                    nearestStation = station;
-                    distance = userPosition.GetDistanceTo(new GeoCoordinate(station.position.latitude, station.position.longitude));
+                    Station potentialBestStation = CallProxy("https://api.jcdecaux.com/vls/v2/stations/" + station.number + "?contract=" + station.contract_name + "&apiKey=ff987c28b1313700e2c97651cec164bd6cb4ed76").Result;
+                    if (potentialBestStation.available_bike_stands >= THRESHOLD_AVAILABLE_BIKES_STANDS)
+                    {
+                        nearestStation = potentialBestStation;
+                        distance = userPosition.GetDistanceTo(new GeoCoordinate(potentialBestStation.position.latitude, potentialBestStation.position.longitude));
+                    }
                 }
             }
 
             return nearestStation;
         }
 
-        private static async Task<List<Station>> CallProxy(string request)
+        private static async Task<List<Station>> CallJCDecaux(string request)
         {
             try
             {
@@ -129,7 +124,7 @@ namespace Routing
                 response.EnsureSuccessStatusCode();
                 string responseBody = await response.Content.ReadAsStringAsync();
 
-                return JsonSerializer.Deserialize<JCDecauxItem>(responseBody).stations;
+                return JsonSerializer.Deserialize<List<Station>>(responseBody);
             }
             catch (HttpRequestException)
             {
@@ -137,7 +132,7 @@ namespace Routing
             }
         }
 
-        private static async Task<ReverseGeoCode> CallOSMReverse(string request)
+        private static async Task<Station> CallProxy(string request)
         {
             try
             {
@@ -145,11 +140,11 @@ namespace Routing
                 response.EnsureSuccessStatusCode();
                 string responseBody = await response.Content.ReadAsStringAsync();
 
-                return JsonSerializer.Deserialize<ReverseGeoCode>(responseBody);
+                return JsonSerializer.Deserialize<Station>(responseBody);
             }
             catch (HttpRequestException)
             {
-                return null;
+                return new Station();
             }
         }
 

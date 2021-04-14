@@ -46,7 +46,7 @@ window.onload = () => {
     }
 }
 
-const retrieveStations = async() => {
+const retrieveStations = () => {
     const targetUrl = "http://localhost:8080/api/stations";
     const requestType = "GET";
 

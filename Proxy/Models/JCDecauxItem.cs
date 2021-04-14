@@ -16,22 +16,22 @@ namespace Proxy.Models
         private static readonly HttpClient client = new HttpClient();
 
         private string request;
+
         [DataMember]
-        public List<Station> stations { get; set; }
+        public Station station { get; set; }
 
         public JCDecauxItem()
         {
-            request = URL + DATA + "?apiKey=" + API_KEY;
-            stations = CallAPI(request).Result;
+            // Nothing to do
         }
 
         public JCDecauxItem(Dictionary<string, string> dictionary)
         {
-            request = URL + DATA + "?contract=" + dictionary["city"] + "&apiKey=" + API_KEY;
-            stations = CallAPI(request).Result;
+            request = URL + DATA + "/" + dictionary["number"] + "?contract=" + dictionary["city"] + "&apiKey=" + API_KEY;
+            station = CallAPI(request).Result;
         }
 
-        private static async Task<List<Station>> CallAPI(string request)
+        private static async Task<Station> CallAPI(string request)
         {
             try
             {
@@ -39,11 +39,11 @@ namespace Proxy.Models
                 response.EnsureSuccessStatusCode();
                 string responseBody = await response.Content.ReadAsStringAsync();
 
-                return JsonSerializer.Deserialize<List<Station>>(responseBody);
+                return JsonSerializer.Deserialize<Station>(responseBody);
             }
             catch (HttpRequestException)
             {
-                return new List<Station>();
+                return new Station();
             }
         }
     }

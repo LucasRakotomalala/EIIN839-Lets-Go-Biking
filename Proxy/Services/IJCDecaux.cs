@@ -1,7 +1,6 @@
 ﻿using Proxy.Models;
 using System.ServiceModel;
 using System.ServiceModel.Web;
-using static Proxy.Models.JCDecauxItem;
 
 namespace Proxy
 {
@@ -9,12 +8,7 @@ namespace Proxy
     public interface IJCDecaux
     {
         [OperationContract]
-        [WebInvoke(Method = "GET", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.WrappedRequest, UriTemplate = "stations")]
-        JCDecauxItem GetAllStations();
-
-        [OperationContract]
-        [WebInvoke(Method = "GET", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.WrappedRequest, UriTemplate = "stations?city={city}")]
-        JCDecauxItem GetAllStationsFromCity(string city);
-
+        [WebInvoke(Method = "GET", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.WrappedRequest, UriTemplate = "station?city={city}&number={number}")]
+        JCDecauxItem GetStation(string city, string number);
     }
 }
