@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Proxy.Models;
+using System.Collections.Generic;
 using System.ServiceModel;
 using System.ServiceModel.Web;
-using static Proxy.Models.JCDecauxItem;
 
 namespace Routing
 {

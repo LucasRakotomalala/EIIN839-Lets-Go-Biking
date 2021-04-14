@@ -1,14 +1,11 @@
 ﻿using Proxy.Models;
 using Routing.Models;
-using System;
 using System.Collections.Generic;
 using System.Device.Location;
-using System.Linq;
 using System.Net.Http;
 using System.ServiceModel.Web;
 using System.Text.Json;
 using System.Threading.Tasks;
-using static Proxy.Models.JCDecauxItem;
 
 namespace Routing
 {
@@ -44,20 +41,22 @@ namespace Routing
         {
             string request = "https://nominatim.openstreetmap.org/search?email=lucas.rakotomalala@etu.univ-cotedazur.fr&format=json&q=" + address;
             List<Place> places = CallOSMPlaces(request).Result;
-            Place bestPlace = places.ElementAt(0);
+            Place bestPlace = null;
+            double importance = double.MinValue;
 
             foreach (Place place in places)
             {
-                if (place.importance > bestPlace.importance)
+                if (place.importance > importance)
                 {
                     bestPlace = place;
+                    importance = place.importance;
                 }
             }
 
-            return new Position
+            return (bestPlace == null) ? null : new Position
             {
-                latitude = Convert.ToDouble(bestPlace.lat.Replace(".", ",")),
-                longitude = Convert.ToDouble(bestPlace.lon.Replace(".", ","))
+                latitude = double.Parse(bestPlace.lat.Replace(".", ",")),
+                longitude = double.Parse(bestPlace.lon.Replace(".", ","))
             }; ;
         }
 
@@ -76,7 +75,7 @@ namespace Routing
             List<Station> stations = GetAllStationsFromCity(GetCityName(latitude, longitude));
 
             GeoCoordinate userPosition = new GeoCoordinate(latitude, longitude);
-            Station nearestStation = stations.ElementAt(0);
+            Station nearestStation = null;
             double distance = double.MaxValue;
 
             foreach (Station station in stations)
@@ -96,7 +95,7 @@ namespace Routing
             List<Station> stations = GetAllStationsFromCity(GetCityName(latitude, longitude));
 
             GeoCoordinate userPosition = new GeoCoordinate(latitude, longitude);
-            Station nearestStation = stations.ElementAt(0);
+            Station nearestStation = null;
             double distance = double.MaxValue;
 
             foreach (Station station in stations)
