@@ -1,37 +1,50 @@
 <!DOCTYPE html>
 <html lang="fr">
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Let's Go Biking !</title>
-    <link rel="icon" type="image/png" href="favicon.png" />
+    <head>
+        <title>Let's Go Biking !</title>
+         <link rel="icon" type="image/png" href="resources/favicon.png" />
+        <meta name="description" content="Let's Go Biking !">
+        <meta charset="UTF-8" />
 
-    <!-- Leaflet -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-        crossorigin="" />
-    <script type="text/javascript" src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-        crossorigin="" defer></script>
+        <!-- Responsiveness -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Leaflet Control Geocoder -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder@2.2.0/dist/Control.Geocoder.css" />
-    <script src="https://unpkg.com/leaflet-control-geocoder@2.2.0/dist/Control.Geocoder.js" defer></script>
+        <!-- PWA -->
+        <link rel="manifest" href="manifest.json" />
+        <link rel="apple-touch-icon" href="resources/lgb-icon-152.png" />   
+        <meta name="theme-color" content="white"/>  
+        <meta name="apple-mobile-web-app-capable" content="yes" />  
+        <meta name="apple-mobile-web-app-status-bar-style" content="#FFFFFF" /> 
+        <meta name="apple-mobile-web-app-title" content="Lets Go Biking !" /> 
+        <meta name="msapplication-TileImage" content="resources/lgb-icon-144.png" />  
+        <meta name="msapplication-TileColor" content="#FFFFFF" />
 
-    <!-- MarkerCluster -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css"/>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css"/>
-    <script type="text/javascript" src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js" defer></script>
+        <!-- Leaflet -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+            integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+            crossorigin="" />
+        <script type="text/javascript" src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+            integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+            crossorigin="" defer></script>
 
-    <!-- Custom -->
-    <link rel="stylesheet" href="styles.css" />
-    <script type="text/javascript" src="script.js" defer></script>
+        <!-- Leaflet Control Geocoder -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder@2.2.0/dist/Control.Geocoder.css" />
+        <script src="https://unpkg.com/leaflet-control-geocoder@2.2.0/dist/Control.Geocoder.js" defer></script>
 
-</head>
+        <!-- MarkerCluster -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css"/>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css"/>
+        <script type="text/javascript" src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js" defer></script>
 
-<body>
-    <div id="map"></div>
-</body>
+        <!-- Custom -->
+        <link rel="stylesheet" href="css/styles.css" />
+        <script type="text/javascript" src="js/script.js" defer></script>
+
+    </head>
+
+    <body>
+        <div id="map"></div>
+    </body>
 
 </html>
