@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Device.Location;
 using System.Net.Http;
 using System.ServiceModel.Web;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -60,14 +61,24 @@ namespace Routing
             }; ;
         }
 
-        public string GetPath(double latitudeStart, double longitudeStart, double latitudeEnd, double longitudeEnd)
+        public string GetPath(Position[] positions)
         {
-            string LatStart = latitudeStart.ToString().Replace(",", ".");
-            string LngStart = longitudeStart.ToString().Replace(",", ".");
-            string LatEnd = latitudeEnd.ToString().Replace(",", ".");
-            string LngEnd = longitudeEnd.ToString().Replace(",", ".");
-            string request = "https://api.openrouteservice.org/v2/directions/cycling-regular?api_key=5b3ce3597851110001cf6248c20bc76cf8e34fd9b3413bf70ae6877d&start=" + LngStart + "," + LatStart + "&end=" + LngEnd + "," + LatEnd;
-            return CallORS(request).Result;
+            string data = "{\"coordinates\":[";
+
+            foreach (Position position in positions)
+            {
+                data += "[" + position.longitude.ToString().Replace(",", ".") + "," + position.latitude.ToString().Replace(",", ".") + "],";
+            }
+
+            data += "],\"instructions\":\"true\",\"language\":\"fr\",\"preference\":\"shortest\",\"units\":\"m\"}";
+            string request = "https://api.openrouteservice.org/v2/directions/cycling-regular/geojson";
+            return CallORS(request, data.Replace("],],", "]],")).Result;
+        }
+
+        public void Options()
+        {
+            WebOperationContext.Current.OutgoingResponse.Headers.Add("Access-Control-Allow-Methods", "POST");
+            WebOperationContext.Current.OutgoingResponse.Headers.Add("Access-Control-Allow-Headers", "Content-Type");
         }
 
         public Station FindNearestStationFromStart(double latitude, double longitude)
@@ -158,11 +169,13 @@ namespace Routing
             }
         }
 
-        private static async Task<string> CallORS(string request)
+        private static async Task<string> CallORS(string request, string data)
         {
             try
             {
-                HttpResponseMessage response = await client.GetAsync(request);
+                var content = new StringContent(data, Encoding.UTF8, "application/json");
+                client.DefaultRequestHeaders.Add("Authorization", "5b3ce3597851110001cf6248c20bc76cf8e34fd9b3413bf70ae6877d");
+                HttpResponseMessage response = await client.PostAsync(request, content);
                 response.EnsureSuccessStatusCode();
                 string responseBody = await response.Content.ReadAsStringAsync();
                 return responseBody;

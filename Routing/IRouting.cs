@@ -29,8 +29,12 @@ namespace Routing
 
         /* OpenRouteService Directions */
         [OperationContract]
-        [WebInvoke(Method = "GET", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.WrappedRequest, UriTemplate = "path?startLat={latitudeStart}&startLng={longitudeStart}&endLat={latitudeEnd}&endLng={longitudeEnd}")]
-        string GetPath(double latitudeStart, double longitudeStart, double latitudeEnd, double longitudeEnd);
+        [WebInvoke(Method = "POST", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.WrappedRequest, UriTemplate = "path")]
+        string GetPath(Position[] positions);
+
+        [OperationContract]
+        [WebInvoke(Method = "OPTIONS", UriTemplate = "path")]
+        void Options();
 
         /* Calculation */
         [OperationContract]

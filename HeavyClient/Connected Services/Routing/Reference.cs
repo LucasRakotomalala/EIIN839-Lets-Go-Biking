@@ -15,9 +15,9 @@ namespace HeavyClient.Routing {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="JCDecauxItem.Station", Namespace="http://schemas.datacontract.org/2004/07/Proxy.Models")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="Station", Namespace="http://schemas.datacontract.org/2004/07/Proxy.Models")]
     [System.SerializableAttribute()]
-    public partial class JCDecauxItemStation : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+    public partial class Station : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
         [System.NonSerializedAttribute()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
@@ -44,7 +44,7 @@ namespace HeavyClient.Routing {
         private int numberField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private HeavyClient.Routing.JCDecauxItemPosition positionField;
+        private HeavyClient.Routing.Position positionField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string statusField;
@@ -151,7 +151,7 @@ namespace HeavyClient.Routing {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public HeavyClient.Routing.JCDecauxItemPosition position {
+        public HeavyClient.Routing.Position position {
             get {
                 return this.positionField;
             }
@@ -188,9 +188,9 @@ namespace HeavyClient.Routing {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="JCDecauxItem.Position", Namespace="http://schemas.datacontract.org/2004/07/Proxy.Models")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="Position", Namespace="http://schemas.datacontract.org/2004/07/Proxy.Models")]
     [System.SerializableAttribute()]
-    public partial class JCDecauxItemPosition : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+    public partial class Position : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
         [System.NonSerializedAttribute()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
@@ -252,16 +252,16 @@ namespace HeavyClient.Routing {
     public interface IRouting {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRouting/GetAllStations", ReplyAction="http://tempuri.org/IRouting/GetAllStationsResponse")]
-        HeavyClient.Routing.JCDecauxItemStation[] GetAllStations();
+        HeavyClient.Routing.Station[] GetAllStations();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRouting/GetAllStations", ReplyAction="http://tempuri.org/IRouting/GetAllStationsResponse")]
-        System.Threading.Tasks.Task<HeavyClient.Routing.JCDecauxItemStation[]> GetAllStationsAsync();
+        System.Threading.Tasks.Task<HeavyClient.Routing.Station[]> GetAllStationsAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRouting/GetAllStationsFromCity", ReplyAction="http://tempuri.org/IRouting/GetAllStationsFromCityResponse")]
-        HeavyClient.Routing.JCDecauxItemStation[] GetAllStationsFromCity(string city);
+        HeavyClient.Routing.Station[] GetAllStationsFromCity(string city);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRouting/GetAllStationsFromCity", ReplyAction="http://tempuri.org/IRouting/GetAllStationsFromCityResponse")]
-        System.Threading.Tasks.Task<HeavyClient.Routing.JCDecauxItemStation[]> GetAllStationsFromCityAsync(string city);
+        System.Threading.Tasks.Task<HeavyClient.Routing.Station[]> GetAllStationsFromCityAsync(string city);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRouting/GetCityName", ReplyAction="http://tempuri.org/IRouting/GetCityNameResponse")]
         string GetCityName(double latitude, double longitude);
@@ -270,28 +270,28 @@ namespace HeavyClient.Routing {
         System.Threading.Tasks.Task<string> GetCityNameAsync(double latitude, double longitude);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRouting/GetPosition", ReplyAction="http://tempuri.org/IRouting/GetPositionResponse")]
-        HeavyClient.Routing.JCDecauxItemPosition GetPosition(string address);
+        HeavyClient.Routing.Position GetPosition(string address);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRouting/GetPosition", ReplyAction="http://tempuri.org/IRouting/GetPositionResponse")]
-        System.Threading.Tasks.Task<HeavyClient.Routing.JCDecauxItemPosition> GetPositionAsync(string address);
+        System.Threading.Tasks.Task<HeavyClient.Routing.Position> GetPositionAsync(string address);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRouting/GetPath", ReplyAction="http://tempuri.org/IRouting/GetPathResponse")]
-        string GetPath(double latitudeStart, double longitudeStart, double latitudeEnd, double longitudeEnd);
+        string GetPath(HeavyClient.Routing.Position[] positions);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRouting/GetPath", ReplyAction="http://tempuri.org/IRouting/GetPathResponse")]
-        System.Threading.Tasks.Task<string> GetPathAsync(double latitudeStart, double longitudeStart, double latitudeEnd, double longitudeEnd);
+        System.Threading.Tasks.Task<string> GetPathAsync(HeavyClient.Routing.Position[] positions);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRouting/FindNearestStationFromStart", ReplyAction="http://tempuri.org/IRouting/FindNearestStationFromStartResponse")]
-        HeavyClient.Routing.JCDecauxItemStation FindNearestStationFromStart(double latitude, double longitude);
+        HeavyClient.Routing.Station FindNearestStationFromStart(double latitude, double longitude);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRouting/FindNearestStationFromStart", ReplyAction="http://tempuri.org/IRouting/FindNearestStationFromStartResponse")]
-        System.Threading.Tasks.Task<HeavyClient.Routing.JCDecauxItemStation> FindNearestStationFromStartAsync(double latitude, double longitude);
+        System.Threading.Tasks.Task<HeavyClient.Routing.Station> FindNearestStationFromStartAsync(double latitude, double longitude);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRouting/FindNearestStationFromEnd", ReplyAction="http://tempuri.org/IRouting/FindNearestStationFromEndResponse")]
-        HeavyClient.Routing.JCDecauxItemStation FindNearestStationFromEnd(double latitude, double longitude);
+        HeavyClient.Routing.Station FindNearestStationFromEnd(double latitude, double longitude);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRouting/FindNearestStationFromEnd", ReplyAction="http://tempuri.org/IRouting/FindNearestStationFromEndResponse")]
-        System.Threading.Tasks.Task<HeavyClient.Routing.JCDecauxItemStation> FindNearestStationFromEndAsync(double latitude, double longitude);
+        System.Threading.Tasks.Task<HeavyClient.Routing.Station> FindNearestStationFromEndAsync(double latitude, double longitude);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -321,19 +321,19 @@ namespace HeavyClient.Routing {
                 base(binding, remoteAddress) {
         }
         
-        public HeavyClient.Routing.JCDecauxItemStation[] GetAllStations() {
+        public HeavyClient.Routing.Station[] GetAllStations() {
             return base.Channel.GetAllStations();
         }
         
-        public System.Threading.Tasks.Task<HeavyClient.Routing.JCDecauxItemStation[]> GetAllStationsAsync() {
+        public System.Threading.Tasks.Task<HeavyClient.Routing.Station[]> GetAllStationsAsync() {
             return base.Channel.GetAllStationsAsync();
         }
         
-        public HeavyClient.Routing.JCDecauxItemStation[] GetAllStationsFromCity(string city) {
+        public HeavyClient.Routing.Station[] GetAllStationsFromCity(string city) {
             return base.Channel.GetAllStationsFromCity(city);
         }
         
-        public System.Threading.Tasks.Task<HeavyClient.Routing.JCDecauxItemStation[]> GetAllStationsFromCityAsync(string city) {
+        public System.Threading.Tasks.Task<HeavyClient.Routing.Station[]> GetAllStationsFromCityAsync(string city) {
             return base.Channel.GetAllStationsFromCityAsync(city);
         }
         
@@ -345,35 +345,35 @@ namespace HeavyClient.Routing {
             return base.Channel.GetCityNameAsync(latitude, longitude);
         }
         
-        public HeavyClient.Routing.JCDecauxItemPosition GetPosition(string address) {
+        public HeavyClient.Routing.Position GetPosition(string address) {
             return base.Channel.GetPosition(address);
         }
         
-        public System.Threading.Tasks.Task<HeavyClient.Routing.JCDecauxItemPosition> GetPositionAsync(string address) {
+        public System.Threading.Tasks.Task<HeavyClient.Routing.Position> GetPositionAsync(string address) {
             return base.Channel.GetPositionAsync(address);
         }
         
-        public string GetPath(double latitudeStart, double longitudeStart, double latitudeEnd, double longitudeEnd) {
-            return base.Channel.GetPath(latitudeStart, longitudeStart, latitudeEnd, longitudeEnd);
+        public string GetPath(HeavyClient.Routing.Position[] positions) {
+            return base.Channel.GetPath(positions);
         }
         
-        public System.Threading.Tasks.Task<string> GetPathAsync(double latitudeStart, double longitudeStart, double latitudeEnd, double longitudeEnd) {
-            return base.Channel.GetPathAsync(latitudeStart, longitudeStart, latitudeEnd, longitudeEnd);
+        public System.Threading.Tasks.Task<string> GetPathAsync(HeavyClient.Routing.Position[] positions) {
+            return base.Channel.GetPathAsync(positions);
         }
         
-        public HeavyClient.Routing.JCDecauxItemStation FindNearestStationFromStart(double latitude, double longitude) {
+        public HeavyClient.Routing.Station FindNearestStationFromStart(double latitude, double longitude) {
             return base.Channel.FindNearestStationFromStart(latitude, longitude);
         }
         
-        public System.Threading.Tasks.Task<HeavyClient.Routing.JCDecauxItemStation> FindNearestStationFromStartAsync(double latitude, double longitude) {
+        public System.Threading.Tasks.Task<HeavyClient.Routing.Station> FindNearestStationFromStartAsync(double latitude, double longitude) {
             return base.Channel.FindNearestStationFromStartAsync(latitude, longitude);
         }
         
-        public HeavyClient.Routing.JCDecauxItemStation FindNearestStationFromEnd(double latitude, double longitude) {
+        public HeavyClient.Routing.Station FindNearestStationFromEnd(double latitude, double longitude) {
             return base.Channel.FindNearestStationFromEnd(latitude, longitude);
         }
         
-        public System.Threading.Tasks.Task<HeavyClient.Routing.JCDecauxItemStation> FindNearestStationFromEndAsync(double latitude, double longitude) {
+        public System.Threading.Tasks.Task<HeavyClient.Routing.Station> FindNearestStationFromEndAsync(double latitude, double longitude) {
             return base.Channel.FindNearestStationFromEndAsync(latitude, longitude);
         }
     }

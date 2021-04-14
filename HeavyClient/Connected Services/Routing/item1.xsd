@@ -9,7 +9,7 @@
   <xs:element name="GetAllStationsResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/Proxy.Models" minOccurs="0" name="GetAllStationsResult" nillable="true" type="q1:ArrayOfJCDecauxItem.Station" />
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/Proxy.Models" minOccurs="0" name="GetAllStationsResult" nillable="true" type="q1:ArrayOfStation" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -23,7 +23,7 @@
   <xs:element name="GetAllStationsFromCityResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/Proxy.Models" minOccurs="0" name="GetAllStationsFromCityResult" nillable="true" type="q2:ArrayOfJCDecauxItem.Station" />
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/Proxy.Models" minOccurs="0" name="GetAllStationsFromCityResult" nillable="true" type="q2:ArrayOfStation" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -52,17 +52,14 @@
   <xs:element name="GetPositionResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/Proxy.Models" minOccurs="0" name="GetPositionResult" nillable="true" type="q3:JCDecauxItem.Position" />
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/Proxy.Models" minOccurs="0" name="GetPositionResult" nillable="true" type="q3:Position" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="GetPath">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="latitudeStart" type="xs:double" />
-        <xs:element minOccurs="0" name="longitudeStart" type="xs:double" />
-        <xs:element minOccurs="0" name="latitudeEnd" type="xs:double" />
-        <xs:element minOccurs="0" name="longitudeEnd" type="xs:double" />
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/Proxy.Models" minOccurs="0" name="positions" nillable="true" type="q4:ArrayOfPosition" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -84,7 +81,7 @@
   <xs:element name="FindNearestStationFromStartResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/Proxy.Models" minOccurs="0" name="FindNearestStationFromStartResult" nillable="true" type="q4:JCDecauxItem.Station" />
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/Proxy.Models" minOccurs="0" name="FindNearestStationFromStartResult" nillable="true" type="q5:Station" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -99,7 +96,7 @@
   <xs:element name="FindNearestStationFromEndResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/Proxy.Models" minOccurs="0" name="FindNearestStationFromEndResult" nillable="true" type="q5:JCDecauxItem.Station" />
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/Proxy.Models" minOccurs="0" name="FindNearestStationFromEndResult" nillable="true" type="q6:Station" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

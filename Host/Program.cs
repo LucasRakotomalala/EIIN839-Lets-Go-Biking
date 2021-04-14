@@ -13,7 +13,7 @@ namespace Host
             routingHost.Open();
 
             Console.WriteLine("The routing service is ready at {0}", routingHost.BaseAddresses[0]);
-            //Console.WriteLine("Press any key to close ...");
+            Console.WriteLine("Press any key to close ...");
             Console.ReadLine();
 
             routingHost.Close();
