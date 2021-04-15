@@ -1,4 +1,4 @@
-let map = L.map('map');
+let map = L.map("map");
 let pathLayer = L.layerGroup();
 
 let start;
@@ -21,7 +21,7 @@ navigator.geolocation.watchPosition(
             map.removeLayer(currentMarker);
         }
         currentMarker = L.marker([position.coords.latitude, position.coords.longitude], { title: "Position actuelle" })
-        .bindPopup(`<b>Postion actuelle</b>`)
+        .bindPopup("<b>Postion actuelle</b>")
         .addTo(map);
     },
     () => {
@@ -30,8 +30,8 @@ navigator.geolocation.watchPosition(
 );
 
 window.onload = () => {
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('serviceWorker.js');
+    if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("serviceWorker.js");
     }
 
     if ("geolocation" in navigator) {
@@ -68,8 +68,8 @@ const retrieveStations = () => {
 const constructMap = (map) => {
     retrieveStations();
 
-    L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
-        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    L.tileLayer("https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png", {
+        attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors",
         minZoom: 1,
         maxZoom: 17
     }).addTo(map);
@@ -77,7 +77,7 @@ const constructMap = (map) => {
 
     map.addLayer(pathLayer);
 
-    map.on('click', () => { // TODO: Add button to remove path
+    map.on("click", () => { // TODO: Add button to remove path
         start = null;
         startStationPosition = null;
 
@@ -88,10 +88,10 @@ const constructMap = (map) => {
     });
 
     L.Control.geocoder({
-        position: 'topright',
+        position: "topright",
         collapsed: false,
-        placeholder: 'Adresse de départ',
-    }).on('markgeocode', (event) => {
+        placeholder: "Adresse de départ",
+    }).on("markgeocode", (event) => {
         start = {
             latitude: event.geocode.center.lat,
             longitude: event.geocode.center.lng
@@ -101,10 +101,10 @@ const constructMap = (map) => {
       .addTo(map);
 
       L.Control.geocoder({
-        position: 'topright',
+        position: "topright",
         collapsed: false,
-        placeholder: 'Adresse d\'arrivée',
-    }).on('markgeocode', (event) => {
+        placeholder: "Adresse d'arrivée",
+    }).on("markgeocode", (event) => {
         end = {
             latitude: event.geocode.center.lat,
             longitude: event.geocode.center.lng
@@ -120,7 +120,7 @@ const showStationMarkers = () => {
     stations.forEach(station => {
         markersCluster.addLayer(L
             .marker([station.position.latitude, station.position.longitude], { title: station.address })
-            .bindPopup(`<b>` + station.address + `</b><br>` + `<a href='javascript:console.log(${station.position.latitude}, ${station.position.longitude});'>S'y rendre</a>`)
+            .bindPopup(`<b>` + station.address + `</b><br>` + `<a href="javascript:console.log(${station.position.latitude}, ${station.position.longitude});">S'y rendre</a>`)
         );
     });
 
@@ -129,8 +129,7 @@ const showStationMarkers = () => {
 
 const getPath = () => {
     const positions = [ start, startStationPosition, endStationPosition, end ];
-    const jsonPositions = JSON.stringify(positions);
-    const data = "{\"positions\": " + jsonPositions + "}";
+    const data = "{\"positions\": " + JSON.stringify(positions) + "}";
 
     const targetUrl = "http://localhost:8080/api/path";
     const requestType = "POST";
