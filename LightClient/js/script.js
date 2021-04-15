@@ -1,33 +1,41 @@
+"use strict";
+
+const API = Object.freeze("http://localhost:8080/api/");
+
+const defaultPosition = Object.freeze({
+    latitude: 45.764043,
+    longitude: 4.835659
+}); // Position de Lyon
+
+const greenIcon = Object.freeze(new L.Icon({
+    iconUrl: "resources/marker-icon-2x-green.png",
+    shadowUrl: "resources/marker-shadow.png",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+}));
+
+const redIcon = Object.freeze(new L.Icon({
+    iconUrl: "resources/marker-icon-2x-red.png",
+    shadowUrl: "resources/marker-shadow.png",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+}));
+
 let map = L.map("map");
 let pathLayer = L.layerGroup();
 
 let start;
 let end;
 
-let defaultPosition = {
-    latitude: 45.764043,
-    longitude: 4.835659
-}; // Position de Lyon
-
 let currentMarker;
 
 let stations;
 let startStationPosition;
 let endStationPosition;
-
-navigator.geolocation.watchPosition(
-    (position) => {
-        if (map && currentMarker) {
-            map.removeLayer(currentMarker);
-        }
-        currentMarker = L.marker([position.coords.latitude, position.coords.longitude], { title: "Position actuelle" })
-        .bindPopup("<b>Postion actuelle</b>")
-        .addTo(map);
-    },
-    () => {
-        console.warn("Can't watch the position");
-    }
-);
 
 window.onload = () => {
     if ("serviceWorker" in navigator) {
@@ -50,8 +58,22 @@ window.onload = () => {
     }
 }
 
+navigator.geolocation.watchPosition(
+    (position) => {
+        if (map && currentMarker) {
+            map.removeLayer(currentMarker);
+        }
+        currentMarker = L.marker([position.coords.latitude, position.coords.longitude], { title: "Position actuelle" })
+            .bindPopup("<b>Postion actuelle</b>")
+            .addTo(map);
+    },
+    () => {
+        console.warn("Can't watch the position");
+    }
+);
+
 const retrieveStations = () => {
-    const targetUrl = "http://localhost:8080/api/stations";
+    const targetUrl = API + "stations";
     const requestType = "GET";
 
     const caller = new XMLHttpRequest();
@@ -73,6 +95,7 @@ const constructMap = (map) => {
         minZoom: 1,
         maxZoom: 17
     }).addTo(map);
+
     L.control.scale().addTo(map);
 
     map.addLayer(pathLayer);
@@ -91,10 +114,19 @@ const constructMap = (map) => {
         position: "topright",
         collapsed: false,
         placeholder: "Adresse de départ",
+        defaultMarkGeocode: false
     }).on("markgeocode", (event) => {
+        const center = event.geocode.center;
+        pathLayer.addLayer(L
+            .marker(center,{
+                icon: greenIcon,
+                title: event.geocode.name})
+            .bindPopup(`<b>Départ</b><br>` + event.geocode.html)
+        );
+        map.fitBounds(event.geocode.bbox);
         start = {
-            latitude: event.geocode.center.lat,
-            longitude: event.geocode.center.lng
+            latitude: center.lat,
+            longitude: center.lng
         };
         findNearestStartStation(start.latitude, start.longitude);
       })
@@ -104,10 +136,20 @@ const constructMap = (map) => {
         position: "topright",
         collapsed: false,
         placeholder: "Adresse d'arrivée",
+        defaultMarkGeocode: false
     }).on("markgeocode", (event) => {
+        const center = event.geocode.center;
+        pathLayer.addLayer(L
+            .marker(center, {
+                icon: redIcon,
+                title: event.geocode.name
+            })
+            .bindPopup(`<b>Arrivée</b><br>` + event.geocode.html)
+        );
+        map.fitBounds(event.geocode.bbox);
         end = {
-            latitude: event.geocode.center.lat,
-            longitude: event.geocode.center.lng
+            latitude: center.lat,
+            longitude: center.lng
         };
         findNearestEndStation(end.latitude, end.longitude);
       })
@@ -131,7 +173,7 @@ const getPath = () => {
     const positions = [ start, startStationPosition, endStationPosition, end ];
     const data = "{\"positions\": " + JSON.stringify(positions) + "}";
 
-    const targetUrl = "http://localhost:8080/api/path";
+    const targetUrl = API + "path";
     const requestType = "POST";
 
     const caller = new XMLHttpRequest();
@@ -148,7 +190,7 @@ const getPath = () => {
 }
 
 const findNearestStartStation = (latitude, longitude) => {
-    const targetUrl = "http://localhost:8080/api/nearestStartStation?lat=" + latitude + "&lng=" + longitude;
+    const targetUrl = API + "nearestStartStation?lat=" + latitude + "&lng=" + longitude;
     const requestType = "GET";
 
     const caller = new XMLHttpRequest();
@@ -170,7 +212,7 @@ const findNearestStartStation = (latitude, longitude) => {
 }
 
 const findNearestEndStation = (latitude, longitude) => {
-    const targetUrl = "http://localhost:8080/api/nearestEndStation?lat=" + latitude + "&lng=" + longitude;
+    const targetUrl = API + "nearestEndStation?lat=" + latitude + "&lng=" + longitude;
     const requestType = "GET";
 
     const caller = new XMLHttpRequest();

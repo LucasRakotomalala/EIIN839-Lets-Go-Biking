@@ -48,8 +48,8 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cache\Cache.cs" />
-    <Compile Include="Cache\ICache.cs" />
+    <Compile Include="Caches\Cache.cs" />
+    <Compile Include="Caches\ICache.cs" />
     <Compile Include="Models\JCDecauxItem.cs" />
     <Compile Include="Services\IJCDecaux.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

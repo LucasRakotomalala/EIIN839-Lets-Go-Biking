@@ -14,7 +14,7 @@ namespace Routing
     public class RoutingService : IRouting
     {
         private static readonly HttpClient client = new HttpClient();
-        private List<Station> allStations;
+        private List<Station> allStations; //TODO: Update stations when specific ones are queried
         private readonly int THRESHOLD_AVAILABLE_BIKES = 2;
         private readonly int THRESHOLD_AVAILABLE_BIKES_STANDS = 2;
 
@@ -82,11 +82,11 @@ namespace Routing
             {
                 if (userPosition.GetDistanceTo(new GeoCoordinate(station.position.latitude, station.position.longitude)) < distance)
                 {
-                    Station potentialBestStation = CallProxy("https://api.jcdecaux.com/vls/v2/stations/" + station.number + "?contract=" + station.contract_name + "&apiKey=ff987c28b1313700e2c97651cec164bd6cb4ed76").Result;
-                    if (potentialBestStation.available_bikes >= THRESHOLD_AVAILABLE_BIKES)
+                    Station potentialNearestStation = CallProxy("https://api.jcdecaux.com/vls/v2/stations/" + station.number + "?contract=" + station.contract_name + "&apiKey=ff987c28b1313700e2c97651cec164bd6cb4ed76").Result;
+                    if (potentialNearestStation.available_bikes >= THRESHOLD_AVAILABLE_BIKES)
                     {
-                        nearestStation = potentialBestStation;
-                        distance = userPosition.GetDistanceTo(new GeoCoordinate(potentialBestStation.position.latitude, potentialBestStation.position.longitude));
+                        nearestStation = potentialNearestStation;
+                        distance = userPosition.GetDistanceTo(new GeoCoordinate(potentialNearestStation.position.latitude, potentialNearestStation.position.longitude));
                     }
                 }
             }
@@ -104,11 +104,11 @@ namespace Routing
             {
                 if (userPosition.GetDistanceTo(new GeoCoordinate(station.position.latitude, station.position.longitude)) < distance)
                 {
-                    Station potentialBestStation = CallProxy("https://api.jcdecaux.com/vls/v2/stations/" + station.number + "?contract=" + station.contract_name + "&apiKey=ff987c28b1313700e2c97651cec164bd6cb4ed76").Result;
-                    if (potentialBestStation.available_bike_stands >= THRESHOLD_AVAILABLE_BIKES_STANDS)
+                    Station potentialNearestStation = CallProxy("https://api.jcdecaux.com/vls/v2/stations/" + station.number + "?contract=" + station.contract_name + "&apiKey=ff987c28b1313700e2c97651cec164bd6cb4ed76").Result;
+                    if (potentialNearestStation.available_bike_stands >= THRESHOLD_AVAILABLE_BIKES_STANDS)
                     {
-                        nearestStation = potentialBestStation;
-                        distance = userPosition.GetDistanceTo(new GeoCoordinate(potentialBestStation.position.latitude, potentialBestStation.position.longitude));
+                        nearestStation = potentialNearestStation;
+                        distance = userPosition.GetDistanceTo(new GeoCoordinate(potentialNearestStation.position.latitude, potentialNearestStation.position.longitude));
                     }
                 }
             }
@@ -168,9 +168,16 @@ namespace Routing
         {
             try
             {
-                var content = new StringContent(data, Encoding.UTF8, "application/json");
-                client.DefaultRequestHeaders.Add("Authorization", "5b3ce3597851110001cf6248c20bc76cf8e34fd9b3413bf70ae6877d");
-                HttpResponseMessage response = await client.PostAsync(request, content);
+                StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+                HttpRequestMessage httpRequest = new HttpRequestMessage()
+                {
+                    RequestUri = new Uri(request),
+                    Method = HttpMethod.Post,
+                    Content = content
+                };
+                httpRequest.Headers.Add("Authorization", "5b3ce3597851110001cf6248c20bc76cf8e34fd9b3413bf70ae6877d");
+
+                HttpResponseMessage response = await client.SendAsync(httpRequest);
                 response.EnsureSuccessStatusCode();
                 string responseBody = await response.Content.ReadAsStringAsync();
                 return responseBody;

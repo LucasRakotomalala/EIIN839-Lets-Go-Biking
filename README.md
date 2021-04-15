@@ -26,7 +26,7 @@
 * [`Proxy`](Proxy)
     * Bibliothèque de services `WCF`
     * Exposition `SOAP` et `REST` des méthodes de son interface [`IJCDecaux`](Proxy/Services/IJCDecaux.cs)
-    * Présence d'un [cache générique](Proxy/Cache/Cache.cs)
+    * Présence d'un [cache générique](Proxy/Caches/Cache.cs)
         * utilisé pour stocker les informations, récupérées avec l'***API de JCDecaux***, d'une station
 
 * [`Routing`](Routing)
@@ -34,12 +34,12 @@
     * Communication en `REST` 
         * avec `Proxy` pour récupérer des données récentes d'une station spécifique
         * avec l'***API de JCDecaux*** en `REST` pour récupérer, à l'initialisation, la liste de toutes les stations
-    * Exposition `SOAP` et `REST` des méthodes de son interface [`IRouting`](Routing/IRouting.cs)
+    * Exposition `SOAP` et `REST` des méthodes de son interface [`IRouting`](Routing/Services/IRouting.cs)
 
 * [`Host`](Host)
     * Projet qui expose une version *console* du projet `Routing`
     * Possibilité d'afficher les traces d'exécutions de `Routing`
 
-### Liens utiles
+## Liens utiles
 
 * [Dockeriser un hôte de service WCF](https://devblogs.microsoft.com/aspnet/lets-try-wcf-self-hosted-services-in-a-container/)
