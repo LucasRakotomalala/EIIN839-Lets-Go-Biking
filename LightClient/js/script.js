@@ -181,8 +181,7 @@ const getPath = () => {
     caller.setRequestHeader("Content-Type", "application/json");
     caller.onreadystatechange = () => {
         if (caller.readyState === XMLHttpRequest.DONE && caller.status === 200) {
-            const response = JSON.parse(caller.responseText);
-            pathLayer.addLayer(L.geoJSON(JSON.parse(response)));
+            pathLayer.addLayer(L.geoJSON(JSON.parse(caller.responseText)));
         }
     }
 

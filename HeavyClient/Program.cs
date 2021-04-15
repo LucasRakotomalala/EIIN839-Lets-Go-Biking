@@ -1,8 +1,5 @@
-﻿using HeavyClient.Models;
-using HeavyClient.Routing;
+﻿using HeavyClient.Routing;
 using System;
-using System.Collections.Generic;
-using System.Text.Json;
 
 namespace HeavyClient
 {
@@ -14,6 +11,9 @@ namespace HeavyClient
 
             do
             {
+                Console.Clear();
+                Console.ResetColor();
+
                 Console.Write("Adresse de départ : ");
                 string startAddress = Console.ReadLine().Replace(" ", "+"); // 11 Rue Saint Jacques, Lyon
 
@@ -22,25 +22,29 @@ namespace HeavyClient
 
                 var startAddressPosition = client.GetPosition(startAddress);
                 var endAddressPosition = client.GetPosition(endAddress);
-                Console.WriteLine(startAddressPosition.latitude);
 
                 var nearestStationFromStartPosition = client.FindNearestStationFromStart(startAddressPosition.latitude, startAddressPosition.longitude);
                 var nearestStationFromEndPosition = client.FindNearestStationFromEnd(endAddressPosition.latitude, endAddressPosition.longitude);
 
                 Position[] positions = new Position[] { startAddressPosition, nearestStationFromStartPosition.position, nearestStationFromEndPosition.position, endAddressPosition };
-                string result = client.GetPath(positions);
 
-                GeoJson completePath = JsonSerializer.Deserialize<GeoJson>(result);
+                GeoJson completePath = client.GetPath(positions);
 
+                Console.BackgroundColor = ConsoleColor.White;
+                Console.ForegroundColor = ConsoleColor.Black;
                 Console.WriteLine("\nParcours complet à suivre :\n");
                 WriteStepsInstruction(completePath.features);
+
+                Console.BackgroundColor = ConsoleColor.White;
+                Console.ForegroundColor = ConsoleColor.Black;
+                Console.WriteLine("\nAppuyez sur une touche pour refaire une requête ...");
             } while (Console.ReadLine() != "quit");
 
             client.Close();
 
         }
 
-        private static void WriteStepsInstruction(List<Feature> features)
+        private static void WriteStepsInstruction(Feature[] features)
         {
             Console.ResetColor();
             foreach (Feature feature in features)

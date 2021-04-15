@@ -52,18 +52,18 @@ namespace Routing
             }; ;
         }
 
-        public string GetPath(Position[] positions)
+        public GeoJson GetPath(Position[] positions)
         {
-            string data = "{\"coordinates\":[";
+            string requestCyclingRegular = "https://api.openrouteservice.org/v2/directions/cycling-regular/geojson";
+            string requestFootWalking = "https://api.openrouteservice.org/v2/directions/foot-walking/geojson";
 
-            foreach (Position position in positions)
-            {
-                data += "[" + position.longitude.ToString().Replace(",", ".") + "," + position.latitude.ToString().Replace(",", ".") + "],";
-            }
+            GeoJson cyclingRegularPath = JsonSerializer.Deserialize<GeoJson>(CallORS(requestCyclingRegular, BuildDataORS(positions)).Result);
+            GeoJson footWalkingPath = JsonSerializer.Deserialize<GeoJson>(CallORS(requestFootWalking, BuildDataORS(new Position[] { positions[0], positions[positions.Length - 1] })).Result);
 
-            data += "],\"instructions\":\"true\",\"language\":\"fr\",\"preference\":\"shortest\",\"units\":\"m\"}";
-            string request = "https://api.openrouteservice.org/v2/directions/cycling-regular/geojson";
-            return CallORS(request, data.Replace("],],", "]],")).Result;
+            bool chooseFootWalkingPathByDistance = footWalkingPath.features[0].properties.summary.distance < cyclingRegularPath.features[0].properties.summary.distance;
+            bool chooseFootWalkingPathByDuration = footWalkingPath.features[0].properties.summary.duration < cyclingRegularPath.features[0].properties.summary.duration;
+
+            return (chooseFootWalkingPathByDistance && chooseFootWalkingPathByDuration) ? footWalkingPath : cyclingRegularPath;
         }
 
         public void Options()
@@ -186,6 +186,20 @@ namespace Routing
             {
                 return null;
             }
+        }
+
+        private string BuildDataORS(Position[] positions)
+        {
+            string data = "{\"coordinates\":[";
+
+            foreach (Position position in positions)
+            {
+                data += "[" + position.longitude.ToString().Replace(",", ".") + "," + position.latitude.ToString().Replace(",", ".") + "],";
+            }
+
+            data += "],\"instructions\":\"true\",\"language\":\"fr\",\"preference\":\"shortest\",\"units\":\"m\"}";
+
+            return data.Replace("],],", "]],");
         }
     }
 }

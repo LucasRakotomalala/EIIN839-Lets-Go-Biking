@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-namespace HeavyClient.Models
+
+namespace Routing.Models
 {
     public class GeoJson
     {

@@ -1,4 +1,5 @@
 ﻿using Proxy.Models;
+using Routing.Models;
 using System.Collections.Generic;
 using System.ServiceModel;
 using System.ServiceModel.Web;
@@ -21,7 +22,7 @@ namespace Routing
         /* OpenRouteService Directions */
         [OperationContract]
         [WebInvoke(Method = "POST", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.WrappedRequest, UriTemplate = "path")]
-        string GetPath(Position[] positions);
+        GeoJson GetPath(Position[] positions);
 
         [OperationContract]
         [WebInvoke(Method = "OPTIONS", UriTemplate = "path")]
