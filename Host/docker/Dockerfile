@@ -8,4 +8,4 @@ EXPOSE 8080
 
 COPY bin/ .
 
-ENTRYPOINT ["Debug/ProxyHost.exe"] 
+ENTRYPOINT ["Debug/Host.exe"] 
