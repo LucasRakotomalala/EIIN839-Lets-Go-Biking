@@ -43,6 +43,10 @@
 
 ## Exécution du projet
 
+```bash
+$ git clone https://github.com/LucasRakotomalala/EIIN839-Lets-Go-Biking.git
+```
+
 ### Exécution du `LightClient`
 
 * Pré-requis :
@@ -72,10 +76,10 @@ $ http-server -p 80 &
 #### Depuis Visual Studio 2019 (en mode Administrateur)
 
 * Définition des projets à lancer
-    <img src="resources/Projets de lancement.png" alt="Projets de lancement" style="margin: auto;"/>
+<img src="resources/Projets de lancement.png" alt="Projets de lancement" style="margin: auto;"/>
 
 * Lancement des projets
-    <img src="resources/Lancement des projets.png" alt="Lancement des projets" style="margin: auto;"/>
+<img src="resources/Lancement des projets.png" alt="Lancement des projets" style="margin: auto;"/>
 
 ## Liens utiles
 
