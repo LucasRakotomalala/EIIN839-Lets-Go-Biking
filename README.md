@@ -40,6 +40,43 @@
     * Projet qui expose une version *console* du projet `Routing`
     * Possibilité d'afficher les traces d'exécutions de `Routing`
 
+
+## Exécution du projet
+
+### Exécution du `LightClient`
+
+* Pré-requis :
+ * [NodeJS](https://nodejs.org/en/)
+ * [http-server](https://www.npmjs.com/package/http-server)
+
+```bash
+$ cd LightClient
+$ http-server -p 80 &
+```
+
+### Exécution de la solution .Net
+
+#### Avec une version Dockerisée de la solution .Net
+
+* Pré-requis :
+ * [Docker](https://www.docker.com)
+ * [Docker Compose](https://www.docker.com)
+
+##### Lancement du serveur et du client
+
+```bash
+$ cd docker
+$ docker-compose up
+```
+
+#### Depuis Visual Studio 2019 (en mode Administrateur)
+
+* Définition des projets à lancer
+ <img src="resources/Projets de lancement.png" alt="Projets de lancement" style="margin: auto;"/>
+
+* Lancement des projets
+ <img src="resources/Lancement des projets.png" alt="Lancement des projets" style="margin: auto;"/>
+
 ## Liens utiles
 
 * [Dockeriser un hôte de service WCF](https://devblogs.microsoft.com/aspnet/lets-try-wcf-self-hosted-services-in-a-container/)

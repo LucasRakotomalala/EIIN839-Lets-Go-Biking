@@ -20,8 +20,8 @@ namespace Routing
 
         public RoutingService()
         {
-            allStations = CallJCDecaux("https://api.jcdecaux.com/vls/v2/stations?apiKey=ff987c28b1313700e2c97651cec164bd6cb4ed76").Result;
             WebOperationContext.Current.OutgoingResponse.Headers.Add("Access-Control-Allow-Origin", "*");
+            allStations = CallJCDecaux("https://api.jcdecaux.com/vls/v2/stations?apiKey=ff987c28b1313700e2c97651cec164bd6cb4ed76").Result;
         }
 
         public List<Station> GetAllStations()
@@ -31,6 +31,12 @@ namespace Routing
 
         public Position GetPosition(string address)
         {
+            address = address.Trim();
+            if (address.Equals("null") || address.Equals(""))
+            {
+                return null;
+            }
+
             string request = "https://nominatim.openstreetmap.org/search?email=lucas.rakotomalala@etu.univ-cotedazur.fr&format=json&q=" + address;
             List<Place> places = CallOSMPlaces(request).Result;
             Place bestPlace = null;
@@ -54,6 +60,11 @@ namespace Routing
 
         public GeoJson GetPath(Position[] positions)
         {
+            if (Array.Exists(positions, position => position == null))
+            {
+                return null;
+            }
+
             string requestCyclingRegular = "https://api.openrouteservice.org/v2/directions/cycling-regular/geojson";
             string requestFootWalking = "https://api.openrouteservice.org/v2/directions/foot-walking/geojson";
 
@@ -128,7 +139,7 @@ namespace Routing
             }
             catch (HttpRequestException)
             {
-                return new List<Station>();
+                return null;
             }
         }
 
@@ -144,7 +155,7 @@ namespace Routing
             }
             catch (HttpRequestException)
             {
-                return new Station();
+                return null;
             }
         }
 
