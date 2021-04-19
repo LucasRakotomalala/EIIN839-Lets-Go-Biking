@@ -46,8 +46,8 @@
 ### Exécution du `LightClient`
 
 * Pré-requis :
- * [NodeJS](https://nodejs.org/en/)
- * [http-server](https://www.npmjs.com/package/http-server)
+    * [NodeJS](https://nodejs.org/en/)
+    * [http-server](https://www.npmjs.com/package/http-server)
 
 ```bash
 $ cd LightClient
@@ -59,23 +59,23 @@ $ http-server -p 80 &
 #### Avec une version Dockerisée de la solution .Net
 
 * Pré-requis :
- * [Docker](https://www.docker.com)
- * [Docker Compose](https://www.docker.com)
+    * [Docker](https://www.docker.com)
+    * [Docker Compose](https://www.docker.com)
 
-##### Lancement du serveur et du client
+* Lancement du serveur et du client
 
-```bash
-$ cd docker
-$ docker-compose up
-```
+    ```bash
+    $ cd docker
+    $ docker-compose up
+    ```
 
 #### Depuis Visual Studio 2019 (en mode Administrateur)
 
 * Définition des projets à lancer
- <img src="resources/Projets de lancement.png" alt="Projets de lancement" style="margin: auto;"/>
+    <img src="resources/Projets de lancement.png" alt="Projets de lancement" style="margin: auto;"/>
 
 * Lancement des projets
- <img src="resources/Lancement des projets.png" alt="Lancement des projets" style="margin: auto;"/>
+    <img src="resources/Lancement des projets.png" alt="Lancement des projets" style="margin: auto;"/>
 
 ## Liens utiles
 
