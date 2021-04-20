@@ -9,7 +9,6 @@ services:
     tty: true
     ports:
       - 8080:8080
-      - 8733:8733
 
   wcfclient_lgb:
     image: furbor/wcfclient-lgb
