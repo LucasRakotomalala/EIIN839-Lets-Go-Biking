@@ -37,8 +37,8 @@
     * Exposition `SOAP` et `REST` des méthodes de son interface [`IRouting`](Routing/Services/IRouting.cs)
 
 * [`Host`](Host)
-    * Projet qui expose une version *console* du projet `Routing`
-    * Possibilité d'afficher les traces d'exécutions de `Routing`
+    * Exposition d'une version *console* du projet `Routing`
+    * Affichage des traces d'exécutions de `Routing`
 
 
 ## Exécution du projet
@@ -48,20 +48,6 @@
 ```bash
 $ git clone https://github.com/LucasRakotomalala/EIIN839-Lets-Go-Biking.git LGB-RAKOTOMALALA
 $ cd LGB-RAKOTOMALALA
-```
-
-### Compilation des sources
-
-* Depuis `Visual Studio 2019` :
-
-<img src="resources/Génération de la solution.png" alt="Génération de la solution" style="margin: auto;"/>
-
-**OU**
-
-* En ligne de commande (depuis un invité de commande VS) :
-
-```bash
-$ msbuild -restore
 ```
 
 ### Exécution du `LightClient`
