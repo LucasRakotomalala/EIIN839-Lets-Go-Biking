@@ -5,6 +5,8 @@ services:
     image: furbor/wcfhost-lgb
     build: ./Host
     container_name: Host
+    stdin_open: true
+    tty: true
     ports:
       - 8080:8080
 
@@ -12,5 +14,9 @@ services:
     image: furbor/wcfclient-lgb
     build: ./HeavyClient
     container_name: Client
+    stdin_open: true
+    tty: true
     depends_on: 
       - wcfhost_lgb
+    environment:
+        Host: wcfhost_lgb

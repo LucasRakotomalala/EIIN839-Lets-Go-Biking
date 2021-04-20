@@ -46,8 +46,8 @@
 ### Récupération des sources
 
 ```bash
-$ git clone https://github.com/LucasRakotomalala/EIIN839-Lets-Go-Biking.git LGB-RAKOTOMALALA
-$ cd LGB-RAKOTOMALALA
+$ git clone https://github.com/LucasRakotomalala/EIIN839-Lets-Go-Biking.git "Let's Go Biking"
+$ cd Let's Go Biking
 ```
 
 ### Compilation des sources
@@ -58,7 +58,7 @@ $ cd LGB-RAKOTOMALALA
 
 **OU**
 
-* En ligne de commande (depuis un invité de commande VS) :
+* En ligne de commande (**depuis un invité de commande VS uniquement**) :
 
 ```bash
 $ msbuild -restore
@@ -97,7 +97,7 @@ $ msbuild -restore
 
 ```bash
 $ cd LightClient
-$ http-server -p 80 &
+$ http-server -p 80
 ```
 
 ## Liens utiles

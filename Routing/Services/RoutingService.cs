@@ -139,6 +139,7 @@ namespace Routing
             }
             catch (HttpRequestException)
             {
+                Console.WriteLine("Error JCDecaux");
                 return null;
             }
         }
@@ -155,6 +156,7 @@ namespace Routing
             }
             catch (HttpRequestException)
             {
+                Console.WriteLine("Error Proxy");
                 return null;
             }
         }
@@ -171,6 +173,7 @@ namespace Routing
             }
             catch (HttpRequestException)
             {
+                Console.WriteLine("Error OSM");
                 return null;
             }
         }
