@@ -61,44 +61,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Connected Services\Routing\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Connected Services\Routing\HeavyClient.Routing.GeoJson.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\Routing\HeavyClient.Routing.Position.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\Routing\HeavyClient.Routing.Station.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\Routing\item.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\Routing\item1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\Routing\item2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\Routing\item3.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\Routing\item4.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\Routing\RoutingService.wsdl" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
@@ -113,19 +80,14 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Connected Services\Routing\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Connected Services\Routing\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Connected Services\Routing\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Connected Services\Routing\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
+    <ProjectReference Include="..\Proxy\Proxy.csproj">
+      <Project>{80242D96-EE01-4210-BB7B-256A1D9C3073}</Project>
+      <Name>Proxy</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Routing\Routing.csproj">
+      <Project>{F5F13283-8999-446A-8D22-5205D2298B00}</Project>
+      <Name>Routing</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

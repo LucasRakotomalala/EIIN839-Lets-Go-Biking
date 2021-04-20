@@ -80,6 +80,12 @@ $ msbuild -restore
     $ docker-compose up -d
     ```
 
+* Accéder à la CLI du client :
+
+    ```bash
+    $ docker attach Client
+    ```
+
 #### Depuis Visual Studio 2019 (en mode *Administrateur*)
 
 * Définition des projets à lancer :

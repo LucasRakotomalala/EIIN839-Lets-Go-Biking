@@ -14,14 +14,15 @@ namespace Routing
     public class RoutingService : IRouting
     {
         private static readonly HttpClient client = new HttpClient();
-        private List<Station> allStations; //TODO: Update stations when specific ones are queried
+        private readonly List<Station> allStations; //TODO: Update stations when specific ones are queried
+
         private readonly int THRESHOLD_AVAILABLE_BIKES = 2;
         private readonly int THRESHOLD_AVAILABLE_BIKES_STANDS = 2;
 
         public RoutingService()
         {
             WebOperationContext.Current.OutgoingResponse.Headers.Add("Access-Control-Allow-Origin", "*");
-            allStations = CallJCDecaux("https://api.jcdecaux.com/vls/v2/stations?apiKey=ff987c28b1313700e2c97651cec164bd6cb4ed76").Result;
+            allStations = CallJCDecaux("https://api.jcdecaux.com/vls/v2/stations?apiKey=ff987c28b1313700e2c97651cec164bd6cb4ed76").Result; // TODO: Resolve the call before each operation
         }
 
         public List<Station> GetAllStations()
@@ -74,6 +75,9 @@ namespace Routing
             bool chooseFootWalkingPathByDistance = footWalkingPath.features[0].properties.summary.distance < cyclingRegularPath.features[0].properties.summary.distance;
             bool chooseFootWalkingPathByDuration = footWalkingPath.features[0].properties.summary.duration < cyclingRegularPath.features[0].properties.summary.duration;
 
+            Console.WriteLine("Distance à pied plus courte ? {0}", chooseFootWalkingPathByDistance);
+            Console.WriteLine("Durée à pied plus courte ? {0}", chooseFootWalkingPathByDuration);
+
             return (chooseFootWalkingPathByDistance && chooseFootWalkingPathByDuration) ? footWalkingPath : cyclingRegularPath;
         }
 
@@ -93,7 +97,7 @@ namespace Routing
             {
                 if (userPosition.GetDistanceTo(new GeoCoordinate(station.position.latitude, station.position.longitude)) < distance)
                 {
-                    Station potentialNearestStation = CallProxy("https://api.jcdecaux.com/vls/v2/stations/" + station.number + "?contract=" + station.contract_name + "&apiKey=ff987c28b1313700e2c97651cec164bd6cb4ed76").Result;
+                    Station potentialNearestStation = CallProxy("http://localhost:8743/API/JCDecaux/station?city=" + station.contract_name + "&number=" + station.number).Result.station;
                     if (potentialNearestStation.available_bikes >= THRESHOLD_AVAILABLE_BIKES)
                     {
                         nearestStation = potentialNearestStation;
@@ -115,7 +119,7 @@ namespace Routing
             {
                 if (userPosition.GetDistanceTo(new GeoCoordinate(station.position.latitude, station.position.longitude)) < distance)
                 {
-                    Station potentialNearestStation = CallProxy("https://api.jcdecaux.com/vls/v2/stations/" + station.number + "?contract=" + station.contract_name + "&apiKey=ff987c28b1313700e2c97651cec164bd6cb4ed76").Result;
+                    Station potentialNearestStation = CallProxy("http://localhost:8743/API/JCDecaux/station?city=" + station.contract_name + "&number=" + station.number).Result.station;
                     if (potentialNearestStation.available_bike_stands >= THRESHOLD_AVAILABLE_BIKES_STANDS)
                     {
                         nearestStation = potentialNearestStation;
@@ -131,6 +135,7 @@ namespace Routing
         {
             try
             {
+                Console.WriteLine("[{0}] Requête GET vers JCDecaux pour obtenir toutes les stations avec l'URL : {1}\n", DateTime.Now, request);
                 HttpResponseMessage response = await client.GetAsync(request);
                 response.EnsureSuccessStatusCode();
                 string responseBody = await response.Content.ReadAsStringAsync();
@@ -143,15 +148,16 @@ namespace Routing
             }
         }
 
-        private static async Task<Station> CallProxy(string request)
+        private static async Task<JCDecauxItem> CallProxy(string request)
         {
             try
             {
+                Console.WriteLine("[{0}] Requête GET vers le Proxy avec l'URL : {1}\n", DateTime.Now, request);
                 HttpResponseMessage response = await client.GetAsync(request);
                 response.EnsureSuccessStatusCode();
                 string responseBody = await response.Content.ReadAsStringAsync();
 
-                return JsonSerializer.Deserialize<Station>(responseBody);
+                return JsonSerializer.Deserialize<JCDecauxItem>(responseBody);
             }
             catch (HttpRequestException)
             {
@@ -163,6 +169,7 @@ namespace Routing
         {
             try
             {
+                Console.WriteLine("[{0}] Requête GET vers OpenStreetMap pour avoir le point le plus près d'une adresse avec l'URL : {1}\n", DateTime.Now, request);
                 HttpResponseMessage response = await client.GetAsync(request);
                 response.EnsureSuccessStatusCode();
                 string responseBody = await response.Content.ReadAsStringAsync();
@@ -179,6 +186,7 @@ namespace Routing
         {
             try
             {
+                Console.WriteLine("[{0}] Requête POST vers OpenRouteService avec l'URL : {1} et les données : {2}\n", DateTime.Now, request, data);
                 StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
                 HttpRequestMessage httpRequest = new HttpRequestMessage()
                 {

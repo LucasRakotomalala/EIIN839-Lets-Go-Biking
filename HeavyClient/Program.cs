@@ -1,5 +1,9 @@
-﻿using HeavyClient.Routing;
+﻿using Proxy.Models;
+using Routing;
+using Routing.Models;
 using System;
+using System.Collections.Generic;
+using System.ServiceModel;
 
 namespace HeavyClient
 {
@@ -7,7 +11,12 @@ namespace HeavyClient
     {
         static void Main(string[] args)
         {
-            RoutingClient client = new RoutingClient("SOAPEndPoint");
+            string host = Environment.GetEnvironmentVariable("host") ?? "localhost:8080";
+            string address = string.Format("http://{0}/JCDecaux/", host);
+
+            BasicHttpBinding binding = new BasicHttpBinding();
+            ChannelFactory<IRouting> factory = new ChannelFactory<IRouting>(binding, address);
+            IRouting client = factory.CreateChannel();
 
             string input;
 
@@ -20,7 +29,7 @@ namespace HeavyClient
                 Console.WriteLine("\t- stats : Voir les utilisations des différentes stations de JCDecaux depuis notre serveur");
                 Console.WriteLine("\t- quit : Quitter le client .Net");
                 Console.Write("\nChoix : ");
-                input = Console.ReadLine().ToLower();
+                input = Console.ReadLine().ToLower().Trim();
 
                 if (input.Equals("route"))
                 {
@@ -37,11 +46,9 @@ namespace HeavyClient
                     Console.WriteLine("Mauvaise entrée, veuillez réessayer ...");
                 }
             } while (!input.Equals("quit"));
-
-            client.Close();
         }
 
-        private static void SearchRoute(RoutingClient client)
+        private static void SearchRoute(IRouting client)
         {
             do
             {
@@ -77,12 +84,12 @@ namespace HeavyClient
                     Console.ForegroundColor = ConsoleColor.Black;
                 }
                
-                Console.WriteLine("\nAppuyez sur une touche pour refaire une requête ou taper 'quit' pour revenir au menu principal ...");
+                Console.WriteLine("\nAppuyez sur une touche pour refaire une requête ou tapez 'quit' pour revenir au menu principal ...");
                 Console.ResetColor();
-            } while (Console.ReadLine() != "quit");
+            } while (Console.ReadLine().ToLower().Trim() != "quit");
         }
 
-        private static void WriteStepsInstruction(Feature[] features)
+        private static void WriteStepsInstruction(List<Feature> features)
         {
             Console.ResetColor();
             foreach (Feature feature in features)

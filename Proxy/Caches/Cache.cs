@@ -7,17 +7,17 @@ namespace Proxy.Cache
     public class Cache<T> : ICache<T> where T : new()
     {
         private ObjectCache cache;
-        private DateTimeOffset dt_default { get; set; }
+        private DateTimeOffset Dt_default { get; set; }
 
         public Cache()
         {
             cache = MemoryCache.Default;
-            dt_default = ObjectCache.InfiniteAbsoluteExpiration;
+            Dt_default = ObjectCache.InfiniteAbsoluteExpiration;
         }
 
         public T Get(string CacheItem, Dictionary<string, string> dictionary)
         {
-            return Get(CacheItem, dt_default, dictionary);
+            return Get(CacheItem, Dt_default, dictionary);
         }
 
         public T Get(string CacheItem, double dt_seconds, Dictionary<string, string> dictionary)

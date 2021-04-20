@@ -1,4 +1,6 @@
-FROM mcr.microsoft.com/dotnet/framework/runtime:4.8
+FROM mcr.microsoft.com/dotnet/framework/wcf:4.8
+
+RUN powershell -Command Add-WindowsFeature NET-WCF-HTTP-Activation45
 
 WORKDIR /app
 

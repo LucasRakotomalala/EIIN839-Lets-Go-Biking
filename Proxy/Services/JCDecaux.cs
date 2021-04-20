@@ -1,23 +1,29 @@
 ﻿using Proxy.Cache;
 using Proxy.Models;
 using System.Collections.Generic;
-using System.Runtime.Caching;
 
 namespace Proxy
 {
     public class JCDecaux : IJCDecaux
     {
-        private static readonly string KEY = "stations";
+        private static readonly string KEY = "station";
 
         private Cache<JCDecauxItem> cache = new Cache<JCDecauxItem>();
         private readonly double EXPIRATION_TIME = 60;
 
-        public JCDecauxItem GetStation(string city, string number)
+        public JCDecauxItem GetStationDefault(string city, string number)
         {
-            Dictionary<string, string> dictionary = new Dictionary<string, string>();
-            dictionary.Add("city", city);
-            dictionary.Add("number", number.ToString());
-            return cache.Get(KEY + "?contract=" + city + "&number=" + number, EXPIRATION_TIME, dictionary);
+            return GetStation(city, number, EXPIRATION_TIME);
+        }
+
+        public JCDecauxItem GetStation(string city, string number, double duration)
+        {
+            Dictionary<string, string> dictionary = new Dictionary<string, string>
+            {
+                { "city", city },
+                { "number", number.ToString() }
+            };
+            return cache.Get(KEY + "?contract=" + city + "&number=" + number, duration, dictionary);
         }
     }
 }
