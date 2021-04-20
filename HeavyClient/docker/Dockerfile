@@ -8,4 +8,4 @@ EXPOSE 8080
 
 COPY bin/ .
 
-ENTRYPOINT ["HeavyClient.exe"]
+ENTRYPOINT ["Host.exe"] 
