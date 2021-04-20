@@ -1,9 +1,0 @@
-FROM mcr.microsoft.com/dotnet/framework/sdk:4.7.2 AS build
-WORKDIR /app
-COPY HeavyClient/. .
-RUN msbuild -restore /p:Configuration=Release
-
-FROM mcr.microsoft.com/dotnet/framework/runtime:4.7.2 AS runtime
-WORKDIR /app
-COPY --from=build /app/bin/Release .
-ENTRYPOINT ["HeavyClient.exe"]

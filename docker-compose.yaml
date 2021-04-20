@@ -2,19 +2,15 @@ version: '3'
 
 services:
   wcfhost_lgb:
-    build:
-      context: .
-      dockerfile: Dockerfile.Host
-    #image: furbor/wcfhost-lgb
+    image: furbor/wcfhost-lgb
+    build: ./Host
     container_name: Host
     ports:
       - 8080:8080
 
   wcfclient_lgb:
-    build:
-      context: .
-      dockerfile: Dockerfile.HeavyClient
-    #image: furbor/wcfclient-lgb
+    image: furbor/wcfclient-lgb
+    build: ./HeavyClient
     container_name: Client
     depends_on: 
       - wcfhost_lgb

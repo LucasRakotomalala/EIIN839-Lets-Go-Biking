@@ -50,16 +50,18 @@ $ git clone https://github.com/LucasRakotomalala/EIIN839-Lets-Go-Biking.git LGB-
 $ cd LGB-RAKOTOMALALA
 ```
 
-### Exécution du `LightClient`
+### Compilation des sources
 
-* Pré-requis :
+* Depuis `Visual Studio 2019` :
 
-    * [NodeJS](https://nodejs.org/en/)
-    * [http-server](https://www.npmjs.com/package/http-server)
+<img src="resources/Génération de la solution.png" alt="Génération de la solution" style="margin: auto;"/>
+
+**OU**
+
+* En ligne de commande (depuis un invité de commande VS) :
 
 ```bash
-$ cd LightClient
-$ http-server -p 80 &
+$ msbuild -restore
 ```
 
 ### Exécution de la solution .Net
@@ -85,6 +87,18 @@ $ http-server -p 80 &
 
 * Lancement des projets :
 <img src="resources/Lancement des projets.png" alt="Lancement des projets" style="margin: auto;"/>
+
+### Exécution du `LightClient`
+
+* Pré-requis :
+
+    * [NodeJS](https://nodejs.org/en/)
+    * [http-server](https://www.npmjs.com/package/http-server)
+
+```bash
+$ cd LightClient
+$ http-server -p 80 &
+```
 
 ## Liens utiles
 

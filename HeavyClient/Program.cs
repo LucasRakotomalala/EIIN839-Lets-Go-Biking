@@ -13,7 +13,7 @@ namespace HeavyClient
 
             do
             {
-                Console.Clear();
+                // Console.Clear();
                 Console.WriteLine("Bienvenue sur le client .Net de Let's Go Biking !");
                 Console.WriteLine("\nChoisissez ce que vous voulez faire :");
                 Console.WriteLine("\t- route : Établir un itinéraire entre 2 adresses");
