@@ -20,7 +20,7 @@ namespace HeavyClient
                 Console.WriteLine("\t- stats : Voir les utilisations des différentes stations de JCDecaux depuis notre serveur");
                 Console.WriteLine("\t- quit : Quitter le client .Net");
                 Console.Write("\nChoix : ");
-                input = Console.ReadLine();
+                input = Console.ReadLine().ToLower();
 
                 if (input.Equals("route"))
                 {

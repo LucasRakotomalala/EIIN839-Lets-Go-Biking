@@ -53,8 +53,8 @@ namespace Routing
 
             return (bestPlace == null) ? null : new Position
             {
-                latitude = double.Parse(bestPlace.lat.Replace(".", ",")),
-                longitude = double.Parse(bestPlace.lon.Replace(".", ","))
+                latitude = double.Parse(bestPlace.lat, new System.Globalization.CultureInfo("en-US")),
+                longitude = double.Parse(bestPlace.lon, new System.Globalization.CultureInfo("en-US"))
             }; ;
         }
 
@@ -139,7 +139,6 @@ namespace Routing
             }
             catch (HttpRequestException)
             {
-                Console.WriteLine("Error JCDecaux");
                 return null;
             }
         }
@@ -156,7 +155,6 @@ namespace Routing
             }
             catch (HttpRequestException)
             {
-                Console.WriteLine("Error Proxy");
                 return null;
             }
         }
@@ -173,7 +171,6 @@ namespace Routing
             }
             catch (HttpRequestException)
             {
-                Console.WriteLine("Error OSM");
                 return null;
             }
         }
