@@ -43,13 +43,15 @@
 
 ## Exécution du projet
 
+### Récupération des sources
 ```bash
 $ git clone https://github.com/LucasRakotomalala/EIIN839-Lets-Go-Biking.git
 ```
 
 ### Exécution du `LightClient`
 
-* Pré-requis :
+* Pré-requis
+
     * [NodeJS](https://nodejs.org/en/)
     * [http-server](https://www.npmjs.com/package/http-server)
 
@@ -62,15 +64,16 @@ $ http-server -p 80 &
 
 #### Avec une version Dockerisée de la solution .Net
 
-* Pré-requis :
+* Pré-requis
+
     * [Docker](https://www.docker.com)
     * [Docker Compose](https://www.docker.com)
 
 * Lancement du serveur et du client
 
     ```bash
-    $ cd docker
-    $ docker-compose up
+    $ cd ../docker
+    $ docker-compose up -d
     ```
 
 #### Depuis Visual Studio 2019 (en mode Administrateur)

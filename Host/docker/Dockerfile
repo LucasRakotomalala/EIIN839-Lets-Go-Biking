@@ -1,11 +1,11 @@
-FROM mcr.microsoft.com/dotnet/framework/wcf:4.8
+FROM mcr.microsoft.com/dotnet/framework/wcf:4.7.2
 
 RUN powershell -Command Add-WindowsFeature NET-WCF-HTTP-Activation45
 
-WORKDIR C://Host
+WORKDIR C://Host//app
 
 EXPOSE 8080
 
 COPY bin/ .
 
-ENTRYPOINT ["Debug/Host.exe"] 
+ENTRYPOINT ["Host.exe"] 
