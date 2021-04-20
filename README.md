@@ -59,7 +59,7 @@ $ cd LGB-RAKOTOMALALA
 * En ligne de commande (depuis un invité de commande VS) :
 
 ```bash
-$ msbuild "Let's Go Biking !.sln"
+$ msbuild -restore
 ```
 
 ### Exécution du `LightClient`
