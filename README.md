@@ -27,7 +27,7 @@
     * Bibliothèque de services `WCF`
     * Exposition `SOAP` et `REST` des méthodes de son interface [`IJCDecaux`](Proxy/Services/IJCDecaux.cs)
     * Présence d'un [cache générique](Proxy/Caches/Cache.cs)
-        * utilisé pour stocker les informations, récupérées avec l'***API de JCDecaux***, d'une station
+        * utilisé pour stocker les informations, récupérées avec l'***API JCDecaux***, d'une station
 
 * [`Routing`](Routing)
     * Bibliothèque de services `WCF`
@@ -74,7 +74,7 @@ $ http-server -p 80 &
 * Lancement du serveur et du client :
 
     ```bash
-    $ cd ../docker
+    $ cd ..
     $ docker-compose up -d
     ```
 
