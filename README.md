@@ -33,7 +33,7 @@
     * Bibliothèque de services `WCF`
     * Communication en `REST` 
         * avec `Proxy` pour récupérer des données récentes d'une station spécifique
-        * avec l'***API de JCDecaux*** en `REST` pour récupérer, à l'initialisation, la liste de toutes les stations
+        * avec l'***API JCDecaux*** en `REST` pour récupérer, à l'initialisation, la liste de toutes les stations
     * Exposition `SOAP` et `REST` des méthodes de son interface [`IRouting`](Routing/Services/IRouting.cs)
 
 * [`Host`](Host)
@@ -52,7 +52,9 @@ $ cd LGB-RAKOTOMALALA
 
 ### Compilation des sources
 
-* Depuis `Visual Studio 2019` (en mode *Administrateur*)
+* Depuis `Visual Studio 2019` :
+
+<img src="resources/Génération de la solution.png" alt="Génération de la solution" style="margin: auto;"/>
 
 **OU**
 
