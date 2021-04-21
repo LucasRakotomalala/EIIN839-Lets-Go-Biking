@@ -14,7 +14,7 @@ namespace HeavyClient
             string host = Environment.GetEnvironmentVariable("host") ?? "localhost:8080";
             string address = string.Format("http://{0}/JCDecaux/", host);
 
-            BasicHttpBinding binding = new BasicHttpBinding();
+            WSHttpBinding binding = new WSHttpBinding();
             ChannelFactory<IRouting> factory = new ChannelFactory<IRouting>(binding, address);
             IRouting client = factory.CreateChannel();
 

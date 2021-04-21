@@ -1,14 +1,16 @@
 ﻿using Proxy.Cache;
 using Proxy.Models;
 using System.Collections.Generic;
+using System.ServiceModel;
 
 namespace Proxy
 {
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerSession)]
     public class JCDecaux : IJCDecaux
     {
         private static readonly string KEY = "station";
 
-        private Cache<JCDecauxItem> cache = new Cache<JCDecauxItem>();
+        private readonly Cache<JCDecauxItem> cache = new Cache<JCDecauxItem>();
         private readonly double EXPIRATION_TIME = 60;
 
         public JCDecauxItem GetStationDefault(string city, string number)

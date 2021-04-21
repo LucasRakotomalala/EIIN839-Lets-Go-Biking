@@ -16,7 +16,7 @@ namespace Host
 
             Console.WriteLine("The routing service is ready at {0}", routingHost.BaseAddresses[0]);
             Console.WriteLine("The proxy service is ready at {0}", proxyHost.BaseAddresses[0]);
-            Console.WriteLine("Press any key to close ...");
+            Console.WriteLine("\nPress any key to close ...\n");
             Console.ReadLine();
 
             routingHost.Close();

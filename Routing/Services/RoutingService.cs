@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Device.Location;
 using System.Net.Http;
+using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
 using System.Text.Json;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace Routing
 {
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerSession)]
     public class RoutingService : IRouting
     {
         private static readonly HttpClient client = new HttpClient();

@@ -6,7 +6,7 @@ namespace Proxy.Cache
 {
     public class Cache<T> : ICache<T> where T : new()
     {
-        private ObjectCache cache;
+        private readonly ObjectCache cache;
         private DateTimeOffset Dt_default { get; set; }
 
         public Cache()
