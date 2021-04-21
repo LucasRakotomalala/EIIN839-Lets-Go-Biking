@@ -60,7 +60,7 @@ $ cd "Let's Go Biking"
 
 #### Avec le script fourni
 
-* Exécution du script batch [`build.bat]`(build.bat)
+* Exécution du script batch [`build.bat`](build.bat)
 * Ouvrir **en tant qu'Administrateur** les exécutables `Host.exe` et `HeavyClient.exe` présents à la racine du projet
 
 #### Avec une version Dockerisée de la solution .Net
@@ -98,7 +98,7 @@ $ cd "Let's Go Biking"
 
 ### Exécution du `LightClient`
 
-#### Avec la `PWA``
+#### Avec la `PWA`
 
 * Pré-requis :
 
