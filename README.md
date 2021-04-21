@@ -47,7 +47,7 @@
 
 ```bash
 $ git clone https://github.com/LucasRakotomalala/EIIN839-Lets-Go-Biking.git "Let's Go Biking"
-$ cd Let's Go Biking
+$ cd "Let's Go Biking"
 ```
 
 ### Compilation des sources
@@ -80,10 +80,16 @@ $ msbuild -restore
     $ docker-compose up -d
     ```
 
-* Accéder à la CLI du client :
+* Accéder à la CLI du `Client` :
 
     ```bash
     $ docker attach Client
+    ```
+
+* Afficher les logs du `Host` :
+
+    ```bash
+    $ docker logs Host
     ```
 
 #### Depuis Visual Studio 2019 (en mode *Administrateur*)

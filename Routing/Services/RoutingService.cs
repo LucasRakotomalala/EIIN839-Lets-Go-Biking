@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 
 namespace Routing
 {
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerSession)]
     public class RoutingService : IRouting
     {
         private static readonly HttpClient client = new HttpClient();

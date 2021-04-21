@@ -14,7 +14,7 @@ namespace HeavyClient
             string host = Environment.GetEnvironmentVariable("host") ?? "localhost:8080";
             string address = string.Format("http://{0}/", host);
 
-            WSHttpBinding binding = new WSHttpBinding();
+            BasicHttpBinding binding = new BasicHttpBinding();
             ChannelFactory<IRouting> factory = new ChannelFactory<IRouting>(binding, address);
             IRouting client = factory.CreateChannel();
 
