@@ -1,8 +1,13 @@
-﻿using Proxy.Models;
+﻿using Microsoft.Office.Interop.Excel;
+using Proxy.Models;
 using Routing;
 using Routing.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.ServiceModel;
 
 namespace HeavyClient
@@ -27,6 +32,7 @@ namespace HeavyClient
                 Console.WriteLine("\nChoisissez ce que vous voulez faire :");
                 Console.WriteLine("\t- path : Établir un itinéraire entre 2 adresses avec des vélos si nécessaire");
                 Console.WriteLine("\t- stats : Voir les utilisations des différentes stations de JCDecaux depuis notre serveur");
+                Console.WriteLine("\t- export : Exporter les utilisations des différentes stations de JCDecaux depuis notre serveur vers un fichier Excel (stats.xls)");
                 Console.WriteLine("\t- quit : Quitter le client .Net");
                 Console.Write("\nChoix : ");
                 input = Console.ReadLine().ToLower().Trim();
@@ -38,6 +44,13 @@ namespace HeavyClient
                 else if (input.Equals("stats"))
                 {
                     WriteLogs(client);
+                    Console.WriteLine("\nAppuyez sur une touche pour revenir au menu principal ...");
+                    Console.ReadLine();
+                }
+                else if (input.Equals("export"))
+                {
+                    Console.WriteLine("\nNouvelle feuille de travail en cours de création ...");
+                    WriteLogsInExcel(client);
                     Console.WriteLine("\nAppuyez sur une touche pour revenir au menu principal ...");
                     Console.ReadLine();
                 }
@@ -86,10 +99,10 @@ namespace HeavyClient
                     Console.BackgroundColor = ConsoleColor.White;
                     Console.ForegroundColor = ConsoleColor.Black;
                 }
-               
-                Console.WriteLine("\nAppuyez sur une touche pour refaire une requête ou tapez 'quit' pour revenir au menu principal ...");
+
+                Console.WriteLine("\nAppuyez sur 'Entrée' pour revenir au menu principal ou sur tout autre touche pour relancer une requête...");
                 Console.ResetColor();
-            } while (Console.ReadLine().ToLower().Trim() != "quit");
+            } while (Console.ReadKey().Key != ConsoleKey.Enter);
         }
 
         private static void WriteStepsInstruction(List<Feature> features)
@@ -113,13 +126,93 @@ namespace HeavyClient
             {
                 string[] separator = new string[] { "@&#&#&@" };
 
-                string date = item.Key.Split(separator, StringSplitOptions.None)[0];
                 string[] value = item.Value.Split(separator, StringSplitOptions.None);
-                string city = value[0];
-                string stationNumber = value[1];
 
-                Console.WriteLine("[{0}] {1} - {2}", date, city, stationNumber);
+                Console.WriteLine("[{0}] {1} - {2}", item.Key.Split(separator, StringSplitOptions.None)[0], value[0], value[1]);
             }
+        }
+
+        private static void WriteLogsInExcel(IRouting client)
+        {
+            Application excel = new Application();
+
+            if (excel != null)
+            {
+                excel.Visible = false;
+                excel.DisplayAlerts = false;
+
+                string outputDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase);
+                string filePath = new Uri(Path.Combine(outputDirectory, "stats.xls")).LocalPath;
+
+                FileInfo file = new FileInfo(filePath);
+
+                Workbooks workBooks = excel.Workbooks;
+                Workbook workBook;
+                Worksheet workSheet;
+
+                if (!file.Exists)
+                {
+                    workBook = workBooks.Add();
+                    workSheet = (Worksheet) workBook.Worksheets.Item[1];
+                }
+                else
+                {
+                    workBook = workBooks.Open(filePath, Type.Missing, false, Type.Missing, Type.Missing, Type.Missing, true);
+                    workSheet = (Worksheet) workBook.Worksheets.Add();
+                }
+
+                workSheet.Name = DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss");
+                workSheet.Cells[1, 1] = "Date et heure de la requête";
+                workSheet.Cells[1, 2] = "Ville concernée";
+                workSheet.Cells[1, 3] = "Numéro de station";
+
+                int index = 2;
+                foreach (KeyValuePair<string, string> item in client.GetLogs())
+                {
+                    string[] separator = new string[] { "@&#&#&@" };
+
+                    string[] value = item.Value.Split(separator, StringSplitOptions.None);
+
+                    workSheet.Cells[index, 1] = item.Key.Split(separator, StringSplitOptions.None)[0];
+                    workSheet.Cells[index, 2] = value[0];
+                    workSheet.Cells[index++, 3] = value[1];
+                }
+
+                workSheet.Columns.AutoFit();
+
+                Console.WriteLine("\nFeuille de travail créée et disponible dans le fichier Excel {0}, sous le nom {1}.", filePath, workSheet.Name);
+
+                workBook.SaveAs(filePath, XlFileFormat.xlExcel7, Type.Missing, Type.Missing, true, false, XlSaveAsAccessMode.xlNoChange, XlSaveConflictResolution.xlLocalSessionChanges, Type.Missing, Type.Missing);
+
+                foreach (Workbook workbook in excel.Workbooks)
+                {
+                    workbook.Close(0);
+                }
+
+                Marshal.ReleaseComObject(workBook);
+                Marshal.ReleaseComObject(workBooks);
+                Marshal.ReleaseComObject(excel);
+
+                excel.Quit();
+
+                //KillExcel(); // Correctly delete process instead of killing all Excel process
+            }
+            else
+            {
+                Console.WriteLine("Microsoft Excel n'est pas installée ...");
+            }
+        }
+
+        private static void KillExcel()
+        {
+            Process[] AllProcesses = Process.GetProcessesByName("excel");
+
+            foreach (Process ExcelProcess in AllProcesses)
+            {
+                ExcelProcess.Kill();
+            }
+
+            AllProcesses = null;
         }
     }
 }
