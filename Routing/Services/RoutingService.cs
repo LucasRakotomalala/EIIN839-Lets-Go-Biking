@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Device.Location;
 using System.Net.Http;
-using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
 using System.Text.Json;
@@ -99,7 +98,7 @@ namespace Routing
                 if (userPosition.GetDistanceTo(new GeoCoordinate(station.position.latitude, station.position.longitude)) < distance)
                 {
                     Station potentialNearestStation = CallProxy("http://localhost:8743/API/JCDecaux/station?city=" + station.contract_name + "&number=" + station.number).Result.station;
-                    if (potentialNearestStation.available_bikes >= THRESHOLD_AVAILABLE_BIKES)
+                    if (potentialNearestStation.available_bikes >= THRESHOLD_AVAILABLE_BIKES && potentialNearestStation.status.Equals("OPEN"))
                     {
                         nearestStation = potentialNearestStation;
                         distance = userPosition.GetDistanceTo(new GeoCoordinate(potentialNearestStation.position.latitude, potentialNearestStation.position.longitude));
@@ -126,7 +125,7 @@ namespace Routing
                 if (userPosition.GetDistanceTo(new GeoCoordinate(station.position.latitude, station.position.longitude)) < distance)
                 {
                     Station potentialNearestStation = CallProxy("http://localhost:8743/API/JCDecaux/station?city=" + station.contract_name + "&number=" + station.number).Result.station;
-                    if (potentialNearestStation.available_bike_stands >= THRESHOLD_AVAILABLE_BIKES_STANDS)
+                    if (potentialNearestStation.available_bike_stands >= THRESHOLD_AVAILABLE_BIKES_STANDS && potentialNearestStation.status.Equals("OPEN"))
                     {
                         nearestStation = potentialNearestStation;
                         distance = userPosition.GetDistanceTo(new GeoCoordinate(potentialNearestStation.position.latitude, potentialNearestStation.position.longitude));

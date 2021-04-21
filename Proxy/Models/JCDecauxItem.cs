@@ -47,6 +47,7 @@ namespace Proxy.Models
             }
         }
     }
+
     [DataContract]
     public class Station
     {

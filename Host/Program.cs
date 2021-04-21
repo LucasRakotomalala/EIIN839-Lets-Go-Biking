@@ -11,13 +11,17 @@ namespace Host
         {
             ServiceHost routingHost = new ServiceHost(typeof(RoutingService));
             ServiceHost proxyHost = new ServiceHost(typeof(JCDecaux));
+
             routingHost.Open();
             proxyHost.Open();
 
             Console.WriteLine("The routing service is ready at {0}", routingHost.BaseAddresses[0]);
             Console.WriteLine("The proxy service is ready at {0}", proxyHost.BaseAddresses[0]);
-            Console.WriteLine("\nPress any key to close ...\n");
-            Console.ReadLine();
+
+            do
+            {
+                Console.WriteLine("\nPress enter to close ...\n");
+            } while (Console.ReadKey().Key != ConsoleKey.Enter);
 
             routingHost.Close();
             proxyHost.Close();
