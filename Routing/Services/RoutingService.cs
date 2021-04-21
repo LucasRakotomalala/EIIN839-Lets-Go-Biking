@@ -16,15 +16,15 @@ namespace Routing
     public class RoutingService : IRouting
     {
         private static readonly HttpClient client = new HttpClient();
-        private readonly List<Station> allStations; //TODO: Update stations when specific ones are queried
+        private static readonly List<Station> allStations = CallJCDecaux("https://api.jcdecaux.com/vls/v2/stations?apiKey=ff987c28b1313700e2c97651cec164bd6cb4ed76").Result; //TODO: Update stations when specific ones are queried
+        private static readonly Dictionary<string, string> logs = new Dictionary<string, string>();
 
-        private readonly int THRESHOLD_AVAILABLE_BIKES = 2;
-        private readonly int THRESHOLD_AVAILABLE_BIKES_STANDS = 2;
+        private static readonly int THRESHOLD_AVAILABLE_BIKES = 2;
+        private static readonly int THRESHOLD_AVAILABLE_BIKES_STANDS = 2;
 
         public RoutingService()
         {
             WebOperationContext.Current.OutgoingResponse.Headers.Add("Access-Control-Allow-Origin", "*");
-            allStations = CallJCDecaux("https://api.jcdecaux.com/vls/v2/stations?apiKey=ff987c28b1313700e2c97651cec164bd6cb4ed76").Result; // TODO: Resolve the call before each operation
         }
 
         public List<Station> GetAllStations()
@@ -58,7 +58,7 @@ namespace Routing
             {
                 latitude = double.Parse(bestPlace.lat, new System.Globalization.CultureInfo("en-US")),
                 longitude = double.Parse(bestPlace.lon, new System.Globalization.CultureInfo("en-US"))
-            }; ;
+            };
         }
 
         public GeoJson GetPath(Position[] positions)
@@ -108,6 +108,11 @@ namespace Routing
                 }
             }
 
+            if (nearestStation != null)
+            {
+                logs.Add(string.Format("{0}@&#&#&@{1}", DateTime.Now.ToString(), new Random().Next().ToString()), string.Format("{0}@&#&#&@{1}", nearestStation.contract_name, nearestStation.number.ToString()));
+            }
+
             return nearestStation;
         }
 
@@ -130,7 +135,17 @@ namespace Routing
                 }
             }
 
+            if (nearestStation != null)
+            {
+                logs.Add(string.Format("{0}@&#&#&@{1}", DateTime.Now.ToString(), new Random().Next().ToString()), string.Format("{0}@&#&#&@{1}", nearestStation.contract_name, nearestStation.number.ToString()));
+            }
+
             return nearestStation;
+        }
+
+        public Dictionary<string, string> GetLogs()
+        {
+            return logs;
         }
 
         private static async Task<List<Station>> CallJCDecaux(string request)

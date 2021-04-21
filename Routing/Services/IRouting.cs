@@ -36,5 +36,9 @@ namespace Routing
         [OperationContract]
         [WebInvoke(Method = "GET", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.WrappedRequest, UriTemplate = "nearestEndStation?lat={latitude}&lng={longitude}")]
         Station FindNearestStationFromEnd(double latitude, double longitude);
+
+        /* Logs */
+        [OperationContract]
+        Dictionary<string, string> GetLogs();
     }
 }
