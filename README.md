@@ -107,7 +107,7 @@ $ cd "Let's Go Biking"
 
 ```bash
 $ cd LightClient
-$ http-server -p 80 # ^C arrêter le serveur HTTP local
+$ http-server -p 80 # ^C pour arrêter le serveur HTTP local
 ```
 
 * URL pour accéder au site internet : `http://localhost/`
