@@ -61,7 +61,7 @@ $ cd "Let's Go Biking"
 #### Avec le script fourni
 
 * Exécution du script batch [`build.bat`](build.bat)
-* Ouvrir **en tant qu'Administrateur** les exécutables `Host.exe` et `HeavyClient.exe` présents à la racine du projet
+* Ouvrir **en tant qu'Administrateur** les exécutables `Host.exe` et `HeavyClient.exe` présents dans le dossier `build`
 
 #### Avec une version Dockerisée de la solution .Net
 
