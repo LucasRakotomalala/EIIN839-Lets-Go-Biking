@@ -12,7 +12,7 @@ namespace HeavyClient
         static void Main(string[] args)
         {
             string host = Environment.GetEnvironmentVariable("host") ?? "localhost:8080";
-            string address = string.Format("http://{0}/JCDecaux/", host);
+            string address = string.Format("http://{0}/", host);
 
             WSHttpBinding binding = new WSHttpBinding();
             ChannelFactory<IRouting> factory = new ChannelFactory<IRouting>(binding, address);
