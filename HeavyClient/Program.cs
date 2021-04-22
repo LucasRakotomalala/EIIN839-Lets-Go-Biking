@@ -184,18 +184,18 @@ namespace HeavyClient
 
                 workBook.SaveAs(filePath, XlFileFormat.xlExcel7, Type.Missing, Type.Missing, true, false, XlSaveAsAccessMode.xlNoChange, XlSaveConflictResolution.xlLocalSessionChanges, Type.Missing, Type.Missing);
 
-                foreach (Workbook workbook in excel.Workbooks)
+                foreach (Workbook workbook in workBooks)
                 {
                     workbook.Close(0);
                 }
+                workBook.Close(0);
+
+                excel.Quit();
 
                 Marshal.ReleaseComObject(workBook);
                 Marshal.ReleaseComObject(workBooks);
                 Marshal.ReleaseComObject(excel);
-
-                excel.Quit();
-
-                //KillExcel(); // Correctly delete process instead of killing all Excel process
+                //KillExcel();
             }
             else
             {
