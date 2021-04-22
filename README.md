@@ -61,7 +61,7 @@ $ cd "Let's Go Biking"
 #### Avec le script fourni
 
 * Pré-requis :
-    * [.NET Framework 4.8 Develop Pack](https://dotnet.microsoft.com/download/dotnet-framework/net48) **OU** [.NET Framework 4.7.2 Develop Pack](https://dotnet.microsoft.com/download/dotnet-framework/net472)
+    * [.NET Framework Developer Pack](https://dotnet.microsoft.com/download/dotnet-framework/) (`>= 4.7.2`)
 
 * Exécution du script batch [`build.bat`](build.bat)
 * Exécuter **en tant qu'Administrateur** `Host.exe` et `HeavyClient.exe` présents dans le dossier `build`
