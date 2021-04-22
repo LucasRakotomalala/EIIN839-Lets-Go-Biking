@@ -61,7 +61,7 @@ $ cd "Let's Go Biking"
 #### Avec le script fourni
 
 * Pré-requis :
-    * [.NET Framework Developer Pack](https://dotnet.microsoft.com/download/dotnet-framework/) (`>= 4.7.2`)
+    * [BuildTools for Visual Studio 2019](https://www.visualstudio.com/downloads/) (`>= 16.0`)
 
 * Exécution du script batch [`build.bat`](build.bat)
 * Exécuter **en tant qu'Administrateur** `Host.exe` et `HeavyClient.exe` présents dans le dossier `build`
@@ -124,4 +124,4 @@ $ http-server -p 80 # ^C pour arrêter le serveur HTTP local
 
 * [Leaflet](https://leafletjs.com/)
 * [Dockeriser un hôte de service WCF](https://devblogs.microsoft.com/aspnet/lets-try-wcf-self-hosted-services-in-a-container/)
-* [Docker Compose WCF App](https://github.com/microsoft/dotnet-framework-docker/tree/main/samples/wcfapp)
+* [Docker Compose - Client WCF et WCF Self-Hosted](https://github.com/microsoft/dotnet-framework-docker/tree/main/samples/wcfapp)
