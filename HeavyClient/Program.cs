@@ -61,6 +61,8 @@ namespace HeavyClient
                 else
                 {
                     Console.WriteLine("Mauvaise entrée, veuillez réessayer ...");
+                    Console.WriteLine("\nAppuyez sur une touche pour revenir au menu principal ...");
+                    Console.ReadLine();
                 }
             } while (!input.Equals("quit"));
         }
@@ -134,13 +136,14 @@ namespace HeavyClient
 
         private static void WriteLogsInExcel(IRouting client)
         {
-            Application excel = new Application();
+            Application excel = new Application
+            {
+                DisplayAlerts = false,
+                Visible = false
+            };
 
             if (excel != null)
             {
-                excel.Visible = false;
-                excel.DisplayAlerts = false;
-
                 string outputDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase);
                 string filePath = new Uri(Path.Combine(outputDirectory, "stats.xls")).LocalPath;
 
@@ -148,17 +151,20 @@ namespace HeavyClient
 
                 Workbooks workBooks = excel.Workbooks;
                 Workbook workBook;
+                Sheets sheets;
                 Worksheet workSheet;
 
                 if (!file.Exists)
                 {
                     workBook = workBooks.Add();
-                    workSheet = (Worksheet) workBook.Worksheets.Item[1];
+                    sheets = workBook.Worksheets;
+                    workSheet = (Worksheet) sheets.Item[1];
                 }
                 else
                 {
                     workBook = workBooks.Open(filePath, Type.Missing, false, Type.Missing, Type.Missing, Type.Missing, true);
-                    workSheet = (Worksheet) workBook.Worksheets.Add();
+                    sheets = workBook.Worksheets;
+                    workSheet = (Worksheet) sheets.Add();
                 }
 
                 workSheet.Name = DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss");
@@ -182,19 +188,16 @@ namespace HeavyClient
 
                 Console.WriteLine("\nFeuille de travail créée et disponible dans le fichier Excel {0}, sous le nom {1}.", filePath, workSheet.Name);
 
-                workBook.SaveAs(filePath, XlFileFormat.xlExcel7, Type.Missing, Type.Missing, true, false, XlSaveAsAccessMode.xlNoChange, XlSaveConflictResolution.xlLocalSessionChanges, Type.Missing, Type.Missing);
+                workBook.SaveAs(filePath, XlFileFormat.xlExcel7, Type.Missing, Type.Missing, true, false, XlSaveAsAccessMode.xlNoChange, XlSaveConflictResolution.xlLocalSessionChanges, Type.Missing, true);
 
-                foreach (Workbook workbook in workBooks)
-                {
-                    workbook.Close(0);
-                }
-                workBook.Close(0);
+                Marshal.FinalReleaseComObject(workSheet);
+                Marshal.FinalReleaseComObject(sheets);
+                workBook.Close(true, Type.Missing, false);
+                Marshal.FinalReleaseComObject(workBook);
+                Marshal.FinalReleaseComObject(workBooks);
 
                 excel.Quit();
-
-                Marshal.ReleaseComObject(workBook);
-                Marshal.ReleaseComObject(workBooks);
-                Marshal.ReleaseComObject(excel);
+                Marshal.FinalReleaseComObject(excel);
                 //KillExcel();
             }
             else

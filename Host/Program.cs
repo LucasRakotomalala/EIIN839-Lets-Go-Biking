@@ -20,7 +20,7 @@ namespace Host
 
             do
             {
-                Console.WriteLine("\nPress enter to close ...\n");
+                Console.WriteLine("\nPress 'Enter' to close ...\n");
             } while (Console.ReadKey().Key != ConsoleKey.Enter);
 
             routingHost.Close();
