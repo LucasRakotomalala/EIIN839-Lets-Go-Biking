@@ -60,8 +60,11 @@ $ cd "Let's Go Biking"
 
 #### Avec le script fourni
 
+* Pré-requis :
+    * [.NET Framework 4.8 Develop Pack](https://dotnet.microsoft.com/download/dotnet-framework/net48) **OU** [.NET Framework 4.7.2 Develop Pack](https://dotnet.microsoft.com/download/dotnet-framework/net472)
+
 * Exécution du script batch [`build.bat`](build.bat)
-* Ouvrir **en tant qu'Administrateur** les exécutables `Host.exe` et `HeavyClient.exe` présents dans le dossier `build`
+* Exécuter **en tant qu'Administrateur** `Host.exe` et `HeavyClient.exe` présents dans le dossier `build`
 
 #### Avec une version Dockerisée de la solution .Net
 
@@ -110,7 +113,7 @@ $ cd LightClient
 $ http-server -p 80 # ^C pour arrêter le serveur HTTP local
 ```
 
-* URL pour accéder au site internet : `http://localhost/`
+* URL pour accéder au site internet : [`http://localhost/`]()http://localhost/`
 
 #### Sans la `PWA`
 
@@ -119,4 +122,6 @@ $ http-server -p 80 # ^C pour arrêter le serveur HTTP local
 
 ## Liens utiles
 
+* [Leaflet](https://leafletjs.com/)
 * [Dockeriser un hôte de service WCF](https://devblogs.microsoft.com/aspnet/lets-try-wcf-self-hosted-services-in-a-container/)
+* [Docker Compose WCF App](https://github.com/microsoft/dotnet-framework-docker/tree/main/samples/wcfapp)
