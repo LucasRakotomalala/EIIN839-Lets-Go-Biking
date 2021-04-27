@@ -19,7 +19,11 @@ namespace HeavyClient
             string host = Environment.GetEnvironmentVariable("host") ?? "localhost:8080";
             string address = string.Format("http://{0}/", host);
 
-            BasicHttpBinding binding = new BasicHttpBinding();
+            BasicHttpBinding binding = new BasicHttpBinding
+            {
+                MaxBufferSize = 1000000,
+                MaxReceivedMessageSize = 1000000
+            };
             ChannelFactory<IRouting> factory = new ChannelFactory<IRouting>(binding, address);
             IRouting client = factory.CreateChannel();
 
@@ -32,7 +36,7 @@ namespace HeavyClient
                 Console.WriteLine("\nChoisissez ce que vous voulez faire :");
                 Console.WriteLine("\t- path : Établir un itinéraire entre 2 adresses avec des vélos si nécessaire");
                 Console.WriteLine("\t- stats : Voir les utilisations des différentes stations de JCDecaux depuis notre serveur");
-                Console.WriteLine("\t- export : Exporter les utilisations des différentes stations de JCDecaux depuis notre serveur vers un fichier Excel (stats.xls)");
+                Console.WriteLine("\t- export : Exporter les utilisations des différentes stations de JCDecaux depuis notre serveur vers un fichier Excel (stats.xls) [/!\\ NE MARCHE PAS DANS UN CONTENEUR DOCKER]");
                 Console.WriteLine("\t- quit : Quitter le client .Net");
                 Console.Write("\nChoix : ");
                 input = Console.ReadLine().ToLower().Trim();

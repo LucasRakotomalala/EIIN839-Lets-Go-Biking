@@ -76,6 +76,7 @@ $ cd "Let's Go Biking"
 * Lancement du serveur et du client :
 
     ```bash
+    $ build.bat # Les images n'étant pas encore sur le Hub Docker à cause de la taille (+ de 6Go)
     $ docker-compose up -d
     ```
 
