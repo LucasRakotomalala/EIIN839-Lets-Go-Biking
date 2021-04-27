@@ -173,7 +173,7 @@ const showStationMarkers = () => {
 
 const getPath = () => {
     const positions = [ start, startStationPosition, endStationPosition, end ];
-    const data = "{\"positions\": " + JSON.stringify(positions) + " }";
+    const data = "{\"positions\": " + JSON.stringify(positions) + "}";
 
     const targetUrl = API + "path";
     const requestType = "POST";
