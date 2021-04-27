@@ -48,15 +48,13 @@ namespace HeavyClient
                 else if (input.Equals("stats"))
                 {
                     WriteLogs(client);
-                    Console.WriteLine("\nAppuyez sur une touche pour revenir au menu principal ...");
-                    Console.ReadLine();
+                    BackToMainMenu();
                 }
                 else if (input.Equals("export"))
                 {
                     Console.WriteLine("\nNouvelle feuille de travail en cours de création ...");
                     WriteLogsInExcel(client);
-                    Console.WriteLine("\nAppuyez sur une touche pour revenir au menu principal ...");
-                    Console.ReadLine();
+                    BackToMainMenu();
                 }
                 else if (input.Equals("quit"))
                 {
@@ -65,8 +63,7 @@ namespace HeavyClient
                 else
                 {
                     Console.WriteLine("Mauvaise entrée, veuillez réessayer ...");
-                    Console.WriteLine("\nAppuyez sur une touche pour revenir au menu principal ...");
-                    Console.ReadLine();
+                    BackToMainMenu();
                 }
             } while (!input.Equals("quit"));
         }
@@ -97,6 +94,7 @@ namespace HeavyClient
                     Position[] positions = new Position[] { startAddressPosition, nearestStationFromStartPosition.position, nearestStationFromEndPosition.position, endAddressPosition };
 
                     GeoJson completePath = client.GetPath(positions);
+
                     Console.BackgroundColor = ConsoleColor.White;
                     Console.ForegroundColor = ConsoleColor.Black;
                     Console.WriteLine("\nParcours complet à suivre :\n");
@@ -208,6 +206,11 @@ namespace HeavyClient
             {
                 Console.WriteLine("Microsoft Excel n'est pas installée ...");
             }
+        }
+        private static void BackToMainMenu()
+        {
+            Console.WriteLine("\nAppuyez sur une touche pour revenir au menu principal ...");
+            Console.ReadLine();
         }
 
         private static void KillExcel()

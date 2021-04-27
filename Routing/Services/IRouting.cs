@@ -26,7 +26,15 @@ namespace Routing
 
         [OperationContract]
         [WebInvoke(Method = "OPTIONS", UriTemplate = "path")]
-        void Options();
+        void PathOptions();
+
+        [OperationContract]
+        [WebInvoke(Method = "POST", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.WrappedRequest, UriTemplate = "goToStation")]
+        GeoJson GoToStation(Position[] positions);
+
+        [OperationContract]
+        [WebInvoke(Method = "OPTIONS", UriTemplate = "goToStation")]
+        void GoToStationOptions();
 
         /* Calculation */
         [OperationContract]

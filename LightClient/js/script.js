@@ -127,7 +127,7 @@ const constructMap = (map) => {
             watch: true,
             enableHighAccuracy: true
         });
-    }).addTo(map);
+    }, "Me localiser").addTo(map);
 
     L.easyButton("<img src=\"resources/remove_path_icon.png\" alt=\"Remove Paths\">", () => {
         start = null;
@@ -137,7 +137,14 @@ const constructMap = (map) => {
         endStationPosition = null;
 
         pathLayer.clearLayers();
-    }).addTo(map);
+
+        const inputs = document.getElementsByTagName("input");
+        for (let i = 0; i < inputs.length; i++) {
+            if (inputs[i].type == "text") {
+                inputs[i].value = "";
+            }
+        }
+    }, "Supprimer les chemins cherchés").addTo(map);
 
     map.on("locationfound", (event) => {
         if (map && currentMarker) {
@@ -157,7 +164,7 @@ const showStationMarkers = () => {
     stations.forEach(station => {
         markersCluster.addLayer(L
             .marker([station.position.latitude, station.position.longitude], { title: station.address })
-            .bindPopup(`<b>` + station.address + `</b><br>` + `<a href="javascript:goTo(${station.position.latitude}, ${station.position.longitude});">S'y rendre</a>`)
+            .bindPopup(`<b>` + station.address + `</b><br>` + `<a href="javascript:goToStation(${station.position.latitude}, ${station.position.longitude});">S'y rendre</a>`)
         );
     });
 
@@ -166,7 +173,7 @@ const showStationMarkers = () => {
 
 const getPath = () => {
     const positions = [ start, startStationPosition, endStationPosition, end ];
-    const data = "{\"positions\": " + JSON.stringify(positions) + "}";
+    const data = "{\"positions\": " + JSON.stringify(positions) + " }";
 
     const targetUrl = API + "path";
     const requestType = "POST";
@@ -227,12 +234,12 @@ const findNearestEndStation = (latitude, longitude) => {
     caller.send();
 }
 
-const goTo = (latitude, longitude) => {
+const goToStation = (latitude, longitude) => {
     if (currentPosition) {
         const positions = [{latitude: currentPosition.lat, longitude: currentPosition.lng}, {latitude, longitude}];
         const data = "{\"positions\": " + JSON.stringify(positions) + "}";
 
-        const targetUrl = API + "path";
+        const targetUrl = API + "goToStation";
         const requestType = "POST";
 
         const caller = new XMLHttpRequest();

@@ -33,7 +33,7 @@ namespace Routing
         public Position GetPosition(string address)
         {
             address = address.Trim();
-            if (address.Equals("null") || address.Equals(""))
+            if (address.Trim().Equals("null") || address.Trim().Equals(""))
             {
                 return null;
             }
@@ -66,11 +66,8 @@ namespace Routing
                 return null;
             }
 
-            string requestCyclingRegular = "https://api.openrouteservice.org/v2/directions/cycling-regular/geojson";
-            string requestFootWalking = "https://api.openrouteservice.org/v2/directions/foot-walking/geojson";
-
-            GeoJson cyclingRegularPath = JsonSerializer.Deserialize<GeoJson>(CallORS(requestCyclingRegular, BuildDataORS(positions)).Result);
-            GeoJson footWalkingPath = JsonSerializer.Deserialize<GeoJson>(CallORS(requestFootWalking, BuildDataORS(new Position[] { positions[0], positions[positions.Length - 1] })).Result);
+            GeoJson cyclingRegularPath = GetPath(positions, "cycling-regular");
+            GeoJson footWalkingPath = GetPath(new Position[] { positions[0], positions[positions.Length - 1] }, "foot-walking");
 
             bool chooseFootWalkingPathByDistance = footWalkingPath.features[0].properties.summary.distance < cyclingRegularPath.features[0].properties.summary.distance;
             bool chooseFootWalkingPathByDuration = footWalkingPath.features[0].properties.summary.duration < cyclingRegularPath.features[0].properties.summary.duration;
@@ -81,7 +78,23 @@ namespace Routing
             return (chooseFootWalkingPathByDistance && chooseFootWalkingPathByDuration) ? footWalkingPath : cyclingRegularPath;
         }
 
-        public void Options()
+        public void PathOptions()
+        {
+            WebOperationContext.Current.OutgoingResponse.Headers.Add("Access-Control-Allow-Methods", "POST");
+            WebOperationContext.Current.OutgoingResponse.Headers.Add("Access-Control-Allow-Headers", "Content-Type");
+        }
+
+        public GeoJson GoToStation(Position[] positions)
+        {
+            if (Array.Exists(positions, position => position == null))
+            {
+                return null;
+            }
+
+            return GetPath(positions, "foot-walking");
+        }
+
+        public void GoToStationOptions()
         {
             WebOperationContext.Current.OutgoingResponse.Headers.Add("Access-Control-Allow-Methods", "POST");
             WebOperationContext.Current.OutgoingResponse.Headers.Add("Access-Control-Allow-Headers", "Content-Type");
@@ -234,6 +247,12 @@ namespace Routing
             data += "],\"instructions\":\"true\",\"language\":\"fr\",\"preference\":\"shortest\",\"units\":\"m\"}";
 
             return data.Replace("],],", "]],");
+        }
+
+        private GeoJson GetPath(Position[] positions, string profile)
+        {
+            string request = "https://api.openrouteservice.org/v2/directions/" + profile + "/geojson";
+            return JsonSerializer.Deserialize<GeoJson>(CallORS(request, BuildDataORS(positions)).Result);
         }
     }
 }

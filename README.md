@@ -64,6 +64,11 @@ $ cd "Let's Go Biking"
     * [BuildTools for Visual Studio 2019](https://www.visualstudio.com/downloads/) (`>= 16.0`)
 
 * Exécution du script batch [`build.bat`](build.bat)
+
+    ```bash
+    $ build
+    ```
+
 * Exécuter **en tant qu'Administrateur** `Host.exe` et `HeavyClient.exe` présents dans le dossier `build`
 
 #### Avec une version Dockerisée de la solution .Net
@@ -76,7 +81,7 @@ $ cd "Let's Go Biking"
 * Lancement du serveur et du client :
 
     ```bash
-    $ build.bat # Les images n'étant pas encore sur le Hub Docker à cause de la taille (+ de 6Go)
+    $ build # Les images n'étant pas encore sur le Hub Docker à cause de la taille (+ de 6Go)
     $ docker-compose up -d
     ```
 
