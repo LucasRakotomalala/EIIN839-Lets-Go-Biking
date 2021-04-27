@@ -32,6 +32,7 @@ let start;
 let end;
 
 let currentMarker;
+let currentPosition;
 
 let stations;
 let startStationPosition;
@@ -42,35 +43,9 @@ window.onload = () => {
         navigator.serviceWorker.register("serviceWorker.js");
     }
 
-    if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition((position) => {
-            map = map.setView([position.coords.latitude, position.coords.longitude], 14);
-            constructMap(map);
-        }, error => {
-            if (error.code == error.PERMISSION_DENIED) {
-                map = map.setView([defaultPosition.latitude, defaultPosition.longitude], 14);
-                constructMap(map);
-            }
-        })
-    } else {
-        map = map.setView([defaultPosition.latitude, defaultPosition.longitude], 14);
-        constructMap(map);
-    }
+    map = map.setView([defaultPosition.latitude, defaultPosition.longitude], 14);
+    constructMap(map);
 }
-
-navigator.geolocation.watchPosition(
-    (position) => {
-        if (map && currentMarker) {
-            map.removeLayer(currentMarker);
-        }
-        currentMarker = L.marker([position.coords.latitude, position.coords.longitude], { title: "Position actuelle" })
-            .bindPopup("<b>Postion actuelle</b>")
-            .addTo(map);
-    },
-    () => {
-        console.warn("Can't watch the position");
-    }
-);
 
 const retrieveStations = () => {
     const targetUrl = API + "stations";
@@ -100,16 +75,6 @@ const constructMap = (map) => {
 
     map.addLayer(pathLayer);
 
-    map.on("click", () => { // TODO: Add button to remove path
-        start = null;
-        startStationPosition = null;
-
-        end = null;
-        endStationPosition = null;
-
-        pathLayer.clearLayers();
-    });
-
     L.Control.geocoder({
         position: "topright",
         collapsed: false,
@@ -132,7 +97,7 @@ const constructMap = (map) => {
       })
       .addTo(map);
 
-      L.Control.geocoder({
+    L.Control.geocoder({
         position: "topright",
         collapsed: false,
         placeholder: "Adresse d'arrivée",
@@ -154,6 +119,36 @@ const constructMap = (map) => {
         findNearestEndStation(end.latitude, end.longitude);
       })
       .addTo(map);
+
+    L.easyButton("<img src=\"resources/my_location_icon.png\" alt=\"My Location\">", (button, map) => {
+        map.locate({
+            setView: true,
+            maxZoom: 16,
+            watch: true,
+            enableHighAccuracy: true
+        });
+    }).addTo(map);
+
+    L.easyButton("<img src=\"resources/remove_path_icon.png\" alt=\"Remove Paths\">", () => {
+        start = null;
+        startStationPosition = null;
+
+        end = null;
+        endStationPosition = null;
+
+        pathLayer.clearLayers();
+    }).addTo(map);
+
+    map.on("locationfound", (event) => {
+        if (map && currentMarker) {
+            currentPosition = null;
+            map.removeLayer(currentMarker);
+        }
+        currentPosition = event.latlng;
+        currentMarker = L.marker(event.latlng, { title: "Position actuelle" })
+            .bindPopup("<b>Postion actuelle</b>")
+            .addTo(map);
+    });
 }
 
 const showStationMarkers = () => {
@@ -162,7 +157,7 @@ const showStationMarkers = () => {
     stations.forEach(station => {
         markersCluster.addLayer(L
             .marker([station.position.latitude, station.position.longitude], { title: station.address })
-            .bindPopup(`<b>` + station.address + `</b><br>` + `<a href="javascript:console.log(${station.position.latitude}, ${station.position.longitude});">S'y rendre</a>`)
+            .bindPopup(`<b>` + station.address + `</b><br>` + `<a href="javascript:goTo(${station.position.latitude}, ${station.position.longitude});">S'y rendre</a>`)
         );
     });
 
@@ -230,4 +225,28 @@ const findNearestEndStation = (latitude, longitude) => {
         }
     }
     caller.send();
+}
+
+const goTo = (latitude, longitude) => {
+    if (currentPosition) {
+        const positions = [{latitude: currentPosition.lat, longitude: currentPosition.lng}, {latitude, longitude}];
+        const data = "{\"positions\": " + JSON.stringify(positions) + "}";
+
+        const targetUrl = API + "path";
+        const requestType = "POST";
+
+        const caller = new XMLHttpRequest();
+        caller.open(requestType, targetUrl, true);
+        caller.setRequestHeader("Content-Type", "application/json");
+        caller.onreadystatechange = () => {
+            if (caller.readyState === XMLHttpRequest.DONE && caller.status === 200) {
+                pathLayer.addLayer(L.geoJSON(JSON.parse(caller.responseText)));
+            }
+        }
+
+        caller.send(data);
+    }
+    else {
+        console.warn("Can't access to user position");
+    }
 }

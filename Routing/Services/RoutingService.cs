@@ -124,7 +124,7 @@ namespace Routing
             {
                 if (userPosition.GetDistanceTo(new GeoCoordinate(station.position.latitude, station.position.longitude)) < distance)
                 {
-                    Station potentialNearestStation = CallProxy("http://localhost:8743/API/JCDecaux/station?city=" + station.contract_name + "&number=" + station.number).Result.station;
+                    Station potentialNearestStation = CallProxy("http://localhost:8081/API/JCDecaux/station?city=" + station.contract_name + "&number=" + station.number).Result.station;
                     if (potentialNearestStation.available_bike_stands >= THRESHOLD_AVAILABLE_BIKES_STANDS && potentialNearestStation.status.Equals("OPEN"))
                     {
                         nearestStation = potentialNearestStation;
