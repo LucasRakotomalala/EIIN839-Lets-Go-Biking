@@ -13,19 +13,19 @@ namespace Proxy
         private readonly Cache<JCDecauxItem> cache = new Cache<JCDecauxItem>();
         private readonly double EXPIRATION_TIME = 60;
 
-        public JCDecauxItem GetStationDefault(string city, string number)
+        public JCDecauxItem GetStationDefault(string city, string stationNumber)
         {
-            return GetStation(city, number, EXPIRATION_TIME);
+            return GetStation(city, stationNumber, EXPIRATION_TIME);
         }
 
-        public JCDecauxItem GetStation(string city, string number, double duration)
+        public JCDecauxItem GetStation(string city, string stationNumber, double duration)
         {
             Dictionary<string, string> dictionary = new Dictionary<string, string>
             {
                 { "city", city },
-                { "number", number.ToString() }
+                { "number", stationNumber }
             };
-            return cache.Get(KEY + "?contract=" + city + "&number=" + number, duration, dictionary);
+            return cache.Get(KEY + "?contract=" + city + "&number=" + stationNumber, duration, dictionary);
         }
     }
 }

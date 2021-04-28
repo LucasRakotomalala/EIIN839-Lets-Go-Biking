@@ -1,4 +1,4 @@
-/** RESET CSS **/
+/** Reset CSS **/
 * {
   margin: 0;
   padding: 0;
@@ -21,7 +21,7 @@ img {
   display: block;
 }
 
-/** CUSTOM CSS **/
+/** Custom CSS **/
 #map {
   width: 100%;
   height: 100vh;

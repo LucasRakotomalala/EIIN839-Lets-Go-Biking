@@ -1,6 +1,8 @@
 "use strict";
 
 const API = Object.freeze("http://localhost:8080/api/");
+//const WEBSITE = Object.freeze("http://localhost/");
+const WEBSITE = Object.freeze("http://localhost:63342/LightClient/");
 
 const defaultPosition = Object.freeze({
     latitude: 45.764043,
@@ -35,6 +37,7 @@ let currentMarker;
 let currentPosition;
 
 let stations;
+
 let startStationPosition;
 let endStationPosition;
 
@@ -126,6 +129,16 @@ const constructMap = (map) => {
             maxZoom: 16,
             watch: true,
             enableHighAccuracy: true
+        })
+        .on("locationfound", (event) => {
+            if (map && currentMarker) {
+                currentPosition = null;
+                map.removeLayer(currentMarker);
+            }
+            currentPosition = event.latlng;
+            currentMarker = L.marker(event.latlng, { title: "Position actuelle" })
+                .bindPopup("<b>Postion actuelle</b>")
+                .addTo(map);
         });
     }, "Me localiser").addTo(map);
 
@@ -140,22 +153,11 @@ const constructMap = (map) => {
 
         const inputs = document.getElementsByTagName("input");
         for (let i = 0; i < inputs.length; i++) {
-            if (inputs[i].type == "text") {
+            if (inputs[i].type === "text") {
                 inputs[i].value = "";
             }
         }
     }, "Supprimer les chemins cherchés").addTo(map);
-
-    map.on("locationfound", (event) => {
-        if (map && currentMarker) {
-            currentPosition = null;
-            map.removeLayer(currentMarker);
-        }
-        currentPosition = event.latlng;
-        currentMarker = L.marker(event.latlng, { title: "Position actuelle" })
-            .bindPopup("<b>Postion actuelle</b>")
-            .addTo(map);
-    });
 }
 
 const showStationsMarker = () => {
@@ -163,8 +165,9 @@ const showStationsMarker = () => {
 
     stations.forEach(station => {
         markersCluster.addLayer(L
-            .marker([station.position.latitude, station.position.longitude], { title: station.address })
-            .bindPopup(`<b>` + station.address + `</b><br>` + `<a href="javascript:goToStation(${station.position.latitude}, ${station.position.longitude});">S'y rendre</a>`)
+            .marker([station.position.latitude, station.position.longitude], { title: station.name })
+            .bindPopup(`<b>` + station.name + `</b><br>` + `<a href="javascript:goToStation(${station.position.latitude}, ${station.position.longitude});">S'y rendre</a>
+<a href="javascript:retrieveStationInformations('${station.contract_name}', ${station.number});" style="float: right;">Plus d'infos</a>`)
         );
     });
 
@@ -186,7 +189,6 @@ const getPath = () => {
             pathLayer.addLayer(L.geoJSON(JSON.parse(caller.responseText)));
         }
     }
-
     caller.send(data);
 }
 
@@ -205,7 +207,7 @@ const findNearestStartStation = (latitude, longitude) => {
         else {
             console.warn("No station found");
         }
-        if (endStationPosition) {
+        if (startStationPosition && endStationPosition) {
             getPath();
         }
     }
@@ -227,7 +229,7 @@ const findNearestEndStation = (latitude, longitude) => {
         else {
             console.warn("No stations found");
         }
-        if (startStationPosition) {
+        if (startStationPosition && endStationPosition) {
             getPath();
         }
     }
@@ -253,6 +255,45 @@ const goToStation = (latitude, longitude) => {
         caller.send(data);
     }
     else {
-        console.warn("Can't access to user position");
+        map.locate({
+            setView: true,
+            maxZoom: 16,
+            watch: true,
+            enableHighAccuracy: true
+        })
+        .once("locationfound", (event) => {
+            if (map && currentMarker) {
+                currentPosition = null;
+                map.removeLayer(currentMarker);
+            }
+            currentPosition = event.latlng;
+            currentMarker = L.marker(event.latlng, { title: "Position actuelle" })
+                .bindPopup("<b>Postion actuelle</b>")
+                .addTo(map);
+            goToStation(latitude, longitude);
+        });
     }
+}
+
+const retrieveStationInformations = (city, stationNumber) => {
+    const targetUrl = API + "station?city=" + city + "&number=" + stationNumber;
+    const requestType = "GET";
+
+    const caller = new XMLHttpRequest();
+    caller.open(requestType, targetUrl, true);
+    caller.setRequestHeader("Accept", "application/json");
+    caller.onload = () => {
+        if (caller.responseText) {
+            const station = JSON.parse(caller.responseText);
+            document.getElementById("offcanvasLabel").innerHTML = station.name + " à " + station.contract_name;
+            document.getElementById("offcanvasBody").innerHTML = "Station : " + ((station.status === "OPEN") ? "Ouverte" : "Fermée") + "<br>Adresse : " + station.address + "<br>Nombre de vélos disponibles : " + station.available_bikes + "<br>Nombre de place disponibles : " + station.available_bike_stands;
+            document.getElementById("buttonoffcanvas").click();
+        }
+        else {
+            console.warn("No information found");
+            document.getElementById("offcanvasLabel").innerHTML = "No information found";
+            document.getElementById("buttonoffcanvas").click();
+        }
+    }
+    caller.send();
 }

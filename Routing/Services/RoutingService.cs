@@ -33,6 +33,11 @@ namespace Routing
             return allStations;
         }
 
+        public Station GetStationInformations(string city, string stationNumber)
+        {
+            return proxy.GetJCDecauxItem(city, stationNumber).Result.station; ;
+        }
+
         public Position GetPosition(string address)
         {
             address = address.Trim();
