@@ -1,8 +1,6 @@
 "use strict";
 
 const API = Object.freeze("http://localhost:8080/api/");
-//const WEBSITE = Object.freeze("http://localhost/");
-const WEBSITE = Object.freeze("http://localhost:63342/LightClient/");
 
 const defaultPosition = Object.freeze({
     latitude: 45.764043,
@@ -43,7 +41,14 @@ let endStationPosition;
 
 window.onload = () => {
     if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.register("serviceWorker.js");
+        navigator.serviceWorker.register("serviceWorker.js").then(
+            () => {
+                //console.log("Registration to the serviceWorker successful");
+            },
+            () => {
+                console.error("Failed to register the serviceWorker");
+            }
+        );
     }
 
     map = map.setView([defaultPosition.latitude, defaultPosition.longitude], 14);
