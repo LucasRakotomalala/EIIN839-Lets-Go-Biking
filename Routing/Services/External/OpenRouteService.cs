@@ -41,7 +41,7 @@ namespace Routing.Services.External
             }
         }
 
-        public async Task<string> PostDirections(string profile, Position[] positions)
+        public async Task<string> PostDirections(Position[] positions, string profile)
         {
             string request = "https://api.openrouteservice.org/v2/directions/" + profile + "/geojson";
             return await PostDirections(request, BuildDataForPOSTCall(positions));

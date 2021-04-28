@@ -163,7 +163,7 @@ namespace Routing
 
         private GeoJson GetPath(Position[] positions, string profile)
         {
-            return JsonSerializer.Deserialize<GeoJson>(openRouteService.PostDirections(profile, positions).Result);
+            return JsonSerializer.Deserialize<GeoJson>(openRouteService.PostDirections(positions, profile).Result);
         }
     }
 }
