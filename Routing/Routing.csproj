@@ -50,6 +50,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\GeoJson.cs" />
+    <Compile Include="Services\External\JCDecaux.cs" />
+    <Compile Include="Services\External\OpenRouteService.cs" />
+    <Compile Include="Services\External\OpenStreetMapNomatim.cs" />
+    <Compile Include="Services\External\ProxyService.cs" />
     <Compile Include="Services\IRouting.cs" />
     <Compile Include="Models\Place.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

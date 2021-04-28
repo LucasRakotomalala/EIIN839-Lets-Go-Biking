@@ -56,7 +56,7 @@ const retrieveStations = () => {
     caller.setRequestHeader("Accept", "application/json");
     caller.onload = () => {
         stations = JSON.parse(caller.responseText);
-        showStationMarkers();
+        showStationsMarker();
     }
     caller.send();
 }
@@ -131,9 +131,9 @@ const constructMap = (map) => {
 
     L.easyButton("<img src=\"resources/remove_path_icon.png\" alt=\"Remove Paths\">", () => {
         start = null;
-        startStationPosition = null;
-
         end = null;
+
+        startStationPosition = null;
         endStationPosition = null;
 
         pathLayer.clearLayers();
@@ -158,7 +158,7 @@ const constructMap = (map) => {
     });
 }
 
-const showStationMarkers = () => {
+const showStationsMarker = () => {
     let markersCluster = L.markerClusterGroup();
 
     stations.forEach(station => {
@@ -172,7 +172,7 @@ const showStationMarkers = () => {
 }
 
 const getPath = () => {
-    const positions = [ start, startStationPosition, endStationPosition, end ];
+    const positions = [start, startStationPosition, endStationPosition, end];
     const data = "{\"positions\": " + JSON.stringify(positions) + "}";
 
     const targetUrl = API + "path";
@@ -203,7 +203,7 @@ const findNearestStartStation = (latitude, longitude) => {
             startStationPosition = station.position;
         }
         else {
-            console.warn("No stations found");
+            console.warn("No station found");
         }
         if (endStationPosition) {
             getPath();
@@ -250,7 +250,6 @@ const goToStation = (latitude, longitude) => {
                 pathLayer.addLayer(L.geoJSON(JSON.parse(caller.responseText)));
             }
         }
-
         caller.send(data);
     }
     else {

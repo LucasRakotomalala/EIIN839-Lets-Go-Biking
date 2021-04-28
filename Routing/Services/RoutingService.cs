@@ -1,20 +1,23 @@
 ﻿using Proxy.Models;
 using Routing.Models;
+using Routing.Services.External;
 using System;
 using System.Collections.Generic;
 using System.Device.Location;
-using System.Net.Http;
 using System.ServiceModel.Web;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace Routing
 {
     public class RoutingService : IRouting
     {
-        private static readonly HttpClient client = new HttpClient();
-        private static readonly List<Station> allStations = CallJCDecaux("https://api.jcdecaux.com/vls/v2/stations?apiKey=ff987c28b1313700e2c97651cec164bd6cb4ed76").Result; //TODO: Update stations when specific ones are queried
+        private static readonly JCDecaux jCDecaux = new JCDecaux();
+        private static readonly ProxyService proxy = new ProxyService();
+
+        private readonly OpenStreetMapNomatim openStreetMapNomatim = new OpenStreetMapNomatim();
+        private readonly OpenRouteService openRouteService = new OpenRouteService();
+
+        private static readonly List<Station> allStations = jCDecaux.GetStations().Result; //TODO: Update stations when specific ones are queried
         private static readonly Dictionary<string, string> logs = new Dictionary<string, string>();
 
         private static readonly int THRESHOLD_AVAILABLE_BIKES = 2;
@@ -33,13 +36,12 @@ namespace Routing
         public Position GetPosition(string address)
         {
             address = address.Trim();
-            if (address.Trim().Equals("null") || address.Trim().Equals(""))
+            if (address.Equals("null") || address.Equals(""))
             {
                 return null;
             }
 
-            string request = "https://nominatim.openstreetmap.org/search?email=lucas.rakotomalala@etu.univ-cotedazur.fr&format=json&q=" + address;
-            List<Place> places = CallOSMPlaces(request).Result;
+            List<Place> places = openStreetMapNomatim.GetPlacesFromAddress(address).Result;
             Place bestPlace = null;
             double importance = double.MinValue;
 
@@ -110,7 +112,7 @@ namespace Routing
             {
                 if (userPosition.GetDistanceTo(new GeoCoordinate(station.position.latitude, station.position.longitude)) < distance)
                 {
-                    Station potentialNearestStation = CallProxy("http://localhost:8081/API/JCDecaux/station?city=" + station.contract_name + "&number=" + station.number).Result.station;
+                    Station potentialNearestStation = proxy.GetJCDecauxItem(station.contract_name, station.number.ToString()).Result.station;
                     if (potentialNearestStation.available_bikes >= THRESHOLD_AVAILABLE_BIKES && potentialNearestStation.status.Equals("OPEN"))
                     {
                         nearestStation = potentialNearestStation;
@@ -121,7 +123,7 @@ namespace Routing
 
             if (nearestStation != null)
             {
-                logs.Add(string.Format("{0}@&#&#&@{1}", DateTime.Now.ToString(), new Random().Next().ToString()), string.Format("{0}@&#&#&@{1}", nearestStation.contract_name, nearestStation.number.ToString()));
+                logs.Add(string.Format("{0}@&#&#&@{1}", DateTime.Now, new Random().Next()), string.Format("{0}@&#&#&@{1}", nearestStation.contract_name, nearestStation.number));
             }
 
             return nearestStation;
@@ -137,7 +139,7 @@ namespace Routing
             {
                 if (userPosition.GetDistanceTo(new GeoCoordinate(station.position.latitude, station.position.longitude)) < distance)
                 {
-                    Station potentialNearestStation = CallProxy("http://localhost:8081/API/JCDecaux/station?city=" + station.contract_name + "&number=" + station.number).Result.station;
+                    Station potentialNearestStation = proxy.GetJCDecauxItem(station.contract_name, station.number.ToString()).Result.station;
                     if (potentialNearestStation.available_bike_stands >= THRESHOLD_AVAILABLE_BIKES_STANDS && potentialNearestStation.status.Equals("OPEN"))
                     {
                         nearestStation = potentialNearestStation;
@@ -148,7 +150,7 @@ namespace Routing
 
             if (nearestStation != null)
             {
-                logs.Add(string.Format("{0}@&#&#&@{1}", DateTime.Now.ToString(), new Random().Next().ToString()), string.Format("{0}@&#&#&@{1}", nearestStation.contract_name, nearestStation.number.ToString()));
+                logs.Add(string.Format("{0}@&#&#&@{1}", DateTime.Now, new Random().Next()), string.Format("{0}@&#&#&@{1}", nearestStation.contract_name, nearestStation.number));
             }
 
             return nearestStation;
@@ -159,100 +161,9 @@ namespace Routing
             return logs;
         }
 
-        private static async Task<List<Station>> CallJCDecaux(string request)
-        {
-            try
-            {
-                Console.WriteLine("[{0}] Requête GET vers JCDecaux pour obtenir toutes les stations avec l'URL : {1}\n", DateTime.Now, request);
-                HttpResponseMessage response = await client.GetAsync(request);
-                response.EnsureSuccessStatusCode();
-                string responseBody = await response.Content.ReadAsStringAsync();
-
-                return JsonSerializer.Deserialize<List<Station>>(responseBody);
-            }
-            catch (HttpRequestException)
-            {
-                return null;
-            }
-        }
-
-        private static async Task<JCDecauxItem> CallProxy(string request)
-        {
-            try
-            {
-                Console.WriteLine("[{0}] Requête GET vers le Proxy avec l'URL : {1}\n", DateTime.Now, request);
-                HttpResponseMessage response = await client.GetAsync(request);
-                response.EnsureSuccessStatusCode();
-                string responseBody = await response.Content.ReadAsStringAsync();
-
-                return JsonSerializer.Deserialize<JCDecauxItem>(responseBody);
-            }
-            catch (HttpRequestException)
-            {
-                return null;
-            }
-        }
-
-        private static async Task<List<Place>> CallOSMPlaces(string request)
-        {
-            try
-            {
-                Console.WriteLine("[{0}] Requête GET vers OpenStreetMap pour avoir le point le plus près d'une adresse avec l'URL : {1}\n", DateTime.Now, request);
-                HttpResponseMessage response = await client.GetAsync(request);
-                response.EnsureSuccessStatusCode();
-                string responseBody = await response.Content.ReadAsStringAsync();
-
-                return JsonSerializer.Deserialize<List<Place>>(responseBody);
-            }
-            catch (HttpRequestException)
-            {
-                return null;
-            }
-        }
-
-        private static async Task<string> CallORS(string request, string data)
-        {
-            try
-            {
-                Console.WriteLine("[{0}] Requête POST vers OpenRouteService avec l'URL : {1} et les données : {2}\n", DateTime.Now, request, data);
-                StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
-                HttpRequestMessage httpRequest = new HttpRequestMessage()
-                {
-                    RequestUri = new Uri(request),
-                    Method = HttpMethod.Post,
-                    Content = content
-                };
-                httpRequest.Headers.Add("Authorization", "5b3ce3597851110001cf6248c20bc76cf8e34fd9b3413bf70ae6877d");
-
-                HttpResponseMessage response = await client.SendAsync(httpRequest);
-                response.EnsureSuccessStatusCode();
-                string responseBody = await response.Content.ReadAsStringAsync();
-                return responseBody;
-            }
-            catch (HttpRequestException)
-            {
-                return null;
-            }
-        }
-
-        private string BuildDataORS(Position[] positions)
-        {
-            string data = "{\"coordinates\":[";
-
-            foreach (Position position in positions)
-            {
-                data += "[" + position.longitude.ToString().Replace(",", ".") + "," + position.latitude.ToString().Replace(",", ".") + "],";
-            }
-
-            data += "],\"instructions\":\"true\",\"language\":\"fr\",\"preference\":\"shortest\",\"units\":\"m\"}";
-
-            return data.Replace("],],", "]],");
-        }
-
         private GeoJson GetPath(Position[] positions, string profile)
         {
-            string request = "https://api.openrouteservice.org/v2/directions/" + profile + "/geojson";
-            return JsonSerializer.Deserialize<GeoJson>(CallORS(request, BuildDataORS(positions)).Result);
+            return JsonSerializer.Deserialize<GeoJson>(openRouteService.PostDirections(profile, positions).Result);
         }
     }
 }

@@ -15,12 +15,13 @@ namespace Host
             routingHost.Open();
             proxyHost.Open();
 
-            Console.WriteLine("The routing service is ready at {0}", routingHost.BaseAddresses[0]);
-            Console.WriteLine("The proxy service is ready at {0}", proxyHost.BaseAddresses[0]);
-
             do
             {
-                Console.WriteLine("\nPress 'Enter' to close ...\n");
+                Console.Clear();
+                Console.WriteLine("Le service \"Routing\" est prêt à l'adresse : {0}", routingHost.BaseAddresses[0]);
+                Console.WriteLine("Le service \"Proxy\" est prêt à l'adresse : {0}", proxyHost.BaseAddresses[0]);
+
+                Console.WriteLine("\nAppuyez sur 'Entrée' pour fermer la fenêtre ...\n");
             } while (Console.ReadKey().Key != ConsoleKey.Enter);
 
             routingHost.Close();
