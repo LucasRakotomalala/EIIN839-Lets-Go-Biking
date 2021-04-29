@@ -25,7 +25,7 @@ const redIcon = Object.freeze(new L.Icon({
     shadowSize: [41, 41]
 }));
 
-let map = L.map("map");
+let map = L.map("map", { worldCopyJump: true });
 let pathLayer = L.layerGroup();
 
 let start;
@@ -75,7 +75,6 @@ const constructMap = (map) => {
 
     L.tileLayer("https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png", {
         attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors",
-  	  	worldCopyJump: true,
         minZoom: 1,
         maxZoom: 17
     }).addTo(map);
