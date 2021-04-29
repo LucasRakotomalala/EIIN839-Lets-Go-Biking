@@ -63,7 +63,7 @@ $ cd "Let's Go Biking"
 * Pré-requis :
     * [BuildTools for Visual Studio 2019](https://www.visualstudio.com/downloads/) (`>= 16.0`)
 
-* Exécution du script batch [`build.bat`](build.bat)
+* Exécution du script batch [`build.bat`](build.bat) (depuis un invité de commande) :
 
     ```bash
     $ build
