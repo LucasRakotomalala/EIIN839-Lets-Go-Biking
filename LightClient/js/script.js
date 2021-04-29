@@ -75,6 +75,7 @@ const constructMap = (map) => {
 
     L.tileLayer("https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png", {
         attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors",
+  	  	worldCopyJump: true,
         minZoom: 1,
         maxZoom: 17
     }).addTo(map);
