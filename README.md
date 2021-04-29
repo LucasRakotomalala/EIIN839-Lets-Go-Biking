@@ -69,9 +69,9 @@ $ cd "Let's Go Biking"
     $ build
     ```
 
-*Note: Dans le cas où le script ne marche pas, un dossier `build.backup` est disponible pour exécuter l'étape suivante.*
+*Note: Dans le cas où le script ne fonctionne pas, un dossier [`build.backup`](build.backup) est disponible pour exécuter l'étape suivante.*
 
-* Exécuter **en tant qu'Administrateur** `Host.exe` et `HeavyClient.exe` présents dans le dossier `build`
+* Exécuter **en tant qu'Administrateur** `Host.exe` et `HeavyClient.exe` présents dans le dossier `build` *(ou [`build.backup`](build.backup))*
 
 #### Avec une version Dockerisée de la solution .Net
 
