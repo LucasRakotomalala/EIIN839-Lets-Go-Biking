@@ -46,7 +46,7 @@ window.onload = () => {
                 //console.log("Registration to the serviceWorker successful");
             },
             () => {
-                console.error("Failed to register the serviceWorker");
+                console.error("Failed to register the serviceWorker !");
             }
         );
     }
@@ -68,7 +68,6 @@ const retrieveStations = () => {
     }
     caller.send();
 }
-
 
 const constructMap = (map) => {
     retrieveStations();
@@ -154,6 +153,9 @@ const constructMap = (map) => {
         startStationPosition = null;
         endStationPosition = null;
 
+        document.getElementById("path").innerHTML = "";
+        document.getElementById("path").style.display = "none";
+
         pathLayer.clearLayers();
 
         const inputs = document.getElementsByTagName("input");
@@ -191,7 +193,11 @@ const getPath = () => {
     caller.setRequestHeader("Content-Type", "application/json");
     caller.onreadystatechange = () => {
         if (caller.readyState === XMLHttpRequest.DONE && caller.status === 200) {
-            pathLayer.addLayer(L.geoJSON(JSON.parse(caller.responseText)));
+            const geoJSON = JSON.parse(caller.responseText);
+            pathLayer.addLayer(L.geoJSON(geoJSON));
+            map.fitBounds(L.geoJSON(geoJSON).getBounds());
+            document.getElementById("path").innerHTML = "<h6>Détails sur l'itinéraire</h6><ul style=\"margin: 0; padding-inline-start: 10px; list-style:none;\"> <li> Durée : <strong>" + Math.round(((geoJSON.features[0].properties.summary.duration / 60) + Number.EPSILON) * 100) / 100 + " mn</strong></li> " + " <li>Distance: <strong>" + Math.round(((geoJSON.features[0].properties.summary.distance / 1000) + Number.EPSILON) * 100) / 100 + " km</strong></li></ul>";
+            document.getElementById("path").style.display = "block";
         }
     }
     caller.send(data);
@@ -254,7 +260,11 @@ const goToStation = (latitude, longitude) => {
         caller.setRequestHeader("Content-Type", "application/json");
         caller.onreadystatechange = () => {
             if (caller.readyState === XMLHttpRequest.DONE && caller.status === 200) {
-                pathLayer.addLayer(L.geoJSON(JSON.parse(caller.responseText)));
+                const geoJSON = JSON.parse(caller.responseText);
+                pathLayer.addLayer(L.geoJSON(geoJSON));
+                map.fitBounds(L.geoJSON(geoJSON).getBounds());
+                document.getElementById("path").innerHTML = "<h6>Détails sur l'itinéraire</h6><ul style=\"margin: 0; padding-inline-start: 10px; list-style:none;\"> <li> Durée : <strong>" + Math.round(((geoJSON.features[0].properties.summary.duration / 60) + Number.EPSILON) * 100) / 100 + " mn</strong></li> " + " <li>Distance: <strong>" + Math.round(((geoJSON.features[0].properties.summary.distance / 1000) + Number.EPSILON) * 100) / 100 + " km</strong></li></ul>";
+                document.getElementById("path").style.display = "block";
             }
         }
         caller.send(data);
@@ -291,7 +301,7 @@ const retrieveStationInformations = (city, stationNumber) => {
         if (caller.responseText) {
             const station = JSON.parse(caller.responseText);
             document.getElementById("offcanvasLabel").innerHTML = station.name + " à " + station.contract_name;
-            document.getElementById("offcanvasBody").innerHTML = "Station : " + ((station.status === "OPEN") ? "Ouverte" : "Fermée") + "<br>Adresse : " + station.address + "<br>Nombre de vélos disponibles : " + station.available_bikes + "<br>Nombre de place disponibles : " + station.available_bike_stands;
+            document.getElementById("offcanvasBody").innerHTML = "Statut : " + ((station.status === "OPEN") ? "Ouvert" : "Fermé") + "<br>Adresse : " + station.address + "<br>Nombre de vélos disponibles : " + station.available_bikes + "<br>Nombre de place disponibles : " + station.available_bike_stands;
             document.getElementById("buttonoffcanvas").click();
         }
         else {

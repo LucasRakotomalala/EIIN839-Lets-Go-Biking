@@ -23,12 +23,27 @@ img {
 
 /** Custom CSS **/
 #map {
+  z-index: 0;
   width: 100%;
   height: 100vh;
+}
+
+#path {
+  display: none;
+  z-index: 1;
+  position: absolute;
+  right: 1em;
+  top: 5em;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 10px;
+  padding: 10px;
 }
 
 @media screen and (max-width: 350px) {
   .leaflet-control-geocoder-expanded {
     width: 200px;
+  }
+  #path {
+    top: 7.3em;
   }
 }

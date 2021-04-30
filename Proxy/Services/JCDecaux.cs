@@ -10,7 +10,7 @@ namespace Proxy
     {
         private static readonly string KEY = "station";
 
-        private readonly Cache<JCDecauxItem> cache = new Cache<JCDecauxItem>();
+        private readonly static Cache<JCDecauxItem> cache = new Cache<JCDecauxItem>();
         private readonly double EXPIRATION_TIME = 60;
 
         public JCDecauxItem GetStationDefault(string city, string stationNumber)
