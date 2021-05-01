@@ -59,14 +59,12 @@ const retrieveStations = () => {
     const targetUrl = API + "stations";
     const requestType = "GET";
 
-    const caller = new XMLHttpRequest();
-    caller.open(requestType, targetUrl, true);
-    caller.setRequestHeader("Accept", "application/json");
-    caller.onload = () => {
-        stations = JSON.parse(caller.responseText);
+    function callback() {
+        stations = JSON.parse(this.responseText);
         showStationsMarker();
     }
-    caller.send();
+
+    request(targetUrl, requestType, callback);
 }
 
 const constructMap = (map) => {
@@ -182,37 +180,32 @@ const showStationsMarker = () => {
 }
 
 const getPath = () => {
-    const positions = [start, startStationPosition, endStationPosition, end];
-    const data = "{\"positions\": " + JSON.stringify(positions) + "}";
-
     const targetUrl = API + "path";
     const requestType = "POST";
 
-    const caller = new XMLHttpRequest();
-    caller.open(requestType, targetUrl, true);
-    caller.setRequestHeader("Content-Type", "application/json");
-    caller.onreadystatechange = () => {
-        if (caller.readyState === XMLHttpRequest.DONE && caller.status === 200) {
-            const geoJSON = JSON.parse(caller.responseText);
+    const positions = [start, startStationPosition, endStationPosition, end];
+    const data = "{\"positions\": " + JSON.stringify(positions) + "}";
+
+    function callback() {
+        if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+            const geoJSON = JSON.parse(this.responseText);
             pathLayer.addLayer(L.geoJSON(geoJSON));
             map.fitBounds(L.geoJSON(geoJSON).getBounds());
             document.getElementById("path").innerHTML = "<h6>Détails sur l'itinéraire</h6><ul style=\"margin: 0; padding-inline-start: 10px; list-style:none;\"> <li> Durée : <strong>" + Math.round(((geoJSON.features[0].properties.summary.duration / 60) + Number.EPSILON) * 100) / 100 + " mn</strong></li> " + " <li>Distance: <strong>" + Math.round(((geoJSON.features[0].properties.summary.distance / 1000) + Number.EPSILON) * 100) / 100 + " km</strong></li></ul>";
             document.getElementById("path").style.display = "block";
         }
     }
-    caller.send(data);
+
+    request(targetUrl, requestType, callback, data);
 }
 
 const findNearestStartStation = (latitude, longitude) => {
     const targetUrl = API + "nearestStartStation?lat=" + latitude + "&lng=" + longitude;
     const requestType = "GET";
 
-    const caller = new XMLHttpRequest();
-    caller.open(requestType, targetUrl, true);
-    caller.setRequestHeader("Accept", "application/json");
-    caller.onload = () => {
-        if (caller.responseText) {
-            const station = JSON.parse(caller.responseText);
+    function callback() {
+        if (this.responseText) {
+            const station = JSON.parse(this.responseText);
             startStationPosition = station.position;
         }
         else {
@@ -222,52 +215,49 @@ const findNearestStartStation = (latitude, longitude) => {
             getPath();
         }
     }
-    caller.send();
+
+    request(targetUrl, requestType, callback);
 }
 
 const findNearestEndStation = (latitude, longitude) => {
     const targetUrl = API + "nearestEndStation?lat=" + latitude + "&lng=" + longitude;
     const requestType = "GET";
 
-    const caller = new XMLHttpRequest();
-    caller.open(requestType, targetUrl, true);
-    caller.setRequestHeader("Accept", "application/json");
-    caller.onload = () => {
-        if (caller.responseText) {
-            const station = JSON.parse(caller.responseText);
+    function callback() {
+        if (this.responseText) {
+            const station = JSON.parse(this.responseText);
             endStationPosition = station.position;
         }
         else {
-            console.warn("No stations found");
+            console.warn("No station found");
         }
         if (startStationPosition && endStationPosition) {
             getPath();
         }
     }
-    caller.send();
+
+    request(targetUrl, requestType, callback);
 }
 
 const goToStation = (latitude, longitude) => {
     if (currentPosition) {
-        const positions = [{latitude: currentPosition.lat, longitude: currentPosition.lng}, {latitude, longitude}];
-        const data = "{\"positions\": " + JSON.stringify(positions) + "}";
-
         const targetUrl = API + "goToStation";
         const requestType = "POST";
 
-        const caller = new XMLHttpRequest();
-        caller.open(requestType, targetUrl, true);
-        caller.setRequestHeader("Content-Type", "application/json");
-        caller.onreadystatechange = () => {
-            if (caller.readyState === XMLHttpRequest.DONE && caller.status === 200) {
-                const geoJSON = JSON.parse(caller.responseText);
+        const positions = [{latitude: currentPosition.lat, longitude: currentPosition.lng}, {latitude, longitude}];
+        const data = "{\"positions\": " + JSON.stringify(positions) + "}";
+
+        function callback() {
+            if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+                const geoJSON = JSON.parse(this.responseText);
                 pathLayer.addLayer(L.geoJSON(geoJSON));
                 map.fitBounds(L.geoJSON(geoJSON).getBounds());
                 document.getElementById("path").innerHTML = "<h6>Détails sur l'itinéraire</h6><ul style=\"margin: 0; padding-inline-start: 10px; list-style:none;\"> <li> Durée : <strong>" + Math.round(((geoJSON.features[0].properties.summary.duration / 60) + Number.EPSILON) * 100) / 100 + " mn</strong></li> " + " <li>Distance: <strong>" + Math.round(((geoJSON.features[0].properties.summary.distance / 1000) + Number.EPSILON) * 100) / 100 + " km</strong></li></ul>";
                 document.getElementById("path").style.display = "block";
             }
         }
-        caller.send(data);
+
+        request(targetUrl, requestType, callback, data);
     }
     else {
         map.locate({
@@ -294,21 +284,35 @@ const retrieveStationInformations = (city, stationNumber) => {
     const targetUrl = API + "station?city=" + city + "&number=" + stationNumber;
     const requestType = "GET";
 
-    const caller = new XMLHttpRequest();
-    caller.open(requestType, targetUrl, true);
-    caller.setRequestHeader("Accept", "application/json");
-    caller.onload = () => {
-        if (caller.responseText) {
-            const station = JSON.parse(caller.responseText);
+    function callback() {
+        if (this.responseText) {
+            const station = JSON.parse(this.responseText);
             document.getElementById("offcanvasLabel").innerHTML = station.name + " à " + station.contract_name;
             document.getElementById("offcanvasBody").innerHTML = "Statut : " + ((station.status === "OPEN") ? "Ouvert" : "Fermé") + "<br>Adresse : " + station.address + "<br>Nombre de vélos disponibles : " + station.available_bikes + "<br>Nombre de place disponibles : " + station.available_bike_stands;
             document.getElementById("buttonoffcanvas").click();
         }
         else {
-            console.warn("No information found");
             document.getElementById("offcanvasLabel").innerHTML = "No information found";
             document.getElementById("buttonoffcanvas").click();
         }
     }
-    caller.send();
+
+    request(targetUrl, requestType, callback);
+}
+
+const request = (targetUrl, requestType, callback, data = null) => {
+    const caller = new XMLHttpRequest();
+
+    caller.open(requestType, targetUrl, true);
+
+    if (requestType === "GET") {
+        caller.setRequestHeader("Accept", "application/json");
+        caller.onload = callback;
+        caller.send();
+    }
+    else {
+        caller.setRequestHeader("Content-Type", "application/json");
+        caller.onreadystatechange = callback;
+        caller.send(data);
+    }
 }

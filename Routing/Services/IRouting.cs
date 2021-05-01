@@ -1,5 +1,6 @@
 ﻿using Proxy.Models;
 using Routing.Models;
+using System;
 using System.Collections.Generic;
 using System.ServiceModel;
 using System.ServiceModel.Web;
@@ -51,6 +52,9 @@ namespace Routing
 
         /* Logs */
         [OperationContract]
-        Dictionary<string, string> GetLogs();
+        Dictionary<(DateTime, int), (string, int)> GetLogs();
+
+        [OperationContract]
+        Dictionary<(DateTime, int), (string, int)> GetLogsByDays(int days);
     }
 }

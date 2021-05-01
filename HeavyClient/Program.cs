@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.ServiceModel;
@@ -52,7 +53,6 @@ namespace HeavyClient
                 }
                 else if (input.Equals("export"))
                 {
-                    Console.WriteLine("\nNouvelle feuille de travail en cours de création ...");
                     WriteLogsInExcel(client);
                     BackToMainMenu();
                 }
@@ -78,7 +78,7 @@ namespace HeavyClient
                 Console.Write("Adresse d'arrivée : ");
                 string endAddress = Console.ReadLine().Trim().Replace(" ", "+"); // 19 Place Louis Pradel, Lyon OR 127 Avenue du Prado, Marseille
 
-                if (startAddress.Equals("null") || endAddress.Equals("null") || startAddress.Equals("") || endAddress.Equals(""))
+                if (startAddress.Equals("null") || endAddress.Equals("null") || startAddress.Equals(string.Empty) || endAddress.Equals(string.Empty))
                 {
                     Console.BackgroundColor = ConsoleColor.White;
                     Console.ForegroundColor = ConsoleColor.Black;
@@ -104,7 +104,7 @@ namespace HeavyClient
                     Console.ForegroundColor = ConsoleColor.Black;
                 }
 
-                Console.WriteLine("\nAppuyez sur 'Entrée' pour revenir au menu principal ou sur tout autre touche pour relancer une requête...");
+                Console.WriteLine("\nAppuyez sur 'Entrée' pour revenir au menu principal ou sur tout autre touche pour relancer une requête ...");
                 Console.ResetColor();
             } while (Console.ReadKey().Key != ConsoleKey.Enter);
         }
@@ -126,18 +126,54 @@ namespace HeavyClient
 
         private static void WriteLogs(IRouting client)
         {
-            foreach (KeyValuePair<string, string> item in client.GetLogs())
+            Console.Write("Nombre de jours à couvrir (laisser vide pour l'historique complet) : ");
+            string input = Console.ReadLine().Trim();
+            if (input.Equals(string.Empty))
             {
-                string[] separator = new string[] { "@&#&#&@" };
-
-                string[] value = item.Value.Split(separator, StringSplitOptions.None);
-
-                Console.WriteLine("[{0}] {1} - {2}", item.Key.Split(separator, StringSplitOptions.None)[0], value[0], value[1]);
+                Console.WriteLine(string.Join(Environment.NewLine, client.GetLogs().Select(log => $"[{log.Key.Item1}] {log.Value.Item1} - {log.Value.Item2}")));
+            }
+            else
+            {
+                try
+                {
+                    Console.WriteLine(string.Join(Environment.NewLine, client.GetLogsByDays(int.Parse(input)).Select(log => $"[{log.Key.Item1}] {log.Value.Item1} - {log.Value.Item2}")));
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("Mauvaise entrée ...");
+                    BackToMainMenu();
+                }
             }
         }
 
         private static void WriteLogsInExcel(IRouting client)
         {
+            Dictionary<(DateTime, int), (string, int)> logs = new Dictionary<(DateTime, int), (string, int)>();
+
+            Console.Write("Nombre de jours à couvrir (laisser vide pour l'historique complet) : ");
+            string input = Console.ReadLine().Trim();
+
+            if (input.Equals(string.Empty))
+            {
+                logs = client.GetLogs();
+            }
+            else
+            {
+                try
+                {
+                    logs = client.GetLogsByDays(int.Parse(input));
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("Mauvaise entrée ...");
+                    Console.WriteLine("Tout l'historique sera exporté ...");
+                    logs = client.GetLogs();
+                }
+            }
+
+            Console.WriteLine("\nNouvelle feuille de travail en cours de création ...");
+
+
             Application excel = new Application
             {
                 DisplayAlerts = false,
@@ -175,15 +211,11 @@ namespace HeavyClient
                 workSheet.Cells[1, 3] = "Numéro de station";
 
                 int index = 2;
-                foreach (KeyValuePair<string, string> item in client.GetLogs())
+                foreach (KeyValuePair<(DateTime, int), (string, int)> item in logs)
                 {
-                    string[] separator = new string[] { "@&#&#&@" };
-
-                    string[] value = item.Value.Split(separator, StringSplitOptions.None);
-
-                    workSheet.Cells[index, 1] = item.Key.Split(separator, StringSplitOptions.None)[0];
-                    workSheet.Cells[index, 2] = value[0];
-                    workSheet.Cells[index++, 3] = value[1];
+                    workSheet.Cells[index, 1] = item.Key.Item1;
+                    workSheet.Cells[index, 2] = item.Value.Item1;
+                    workSheet.Cells[index++, 3] = item.Value.Item2;
                 }
 
                 workSheet.Columns.AutoFit();

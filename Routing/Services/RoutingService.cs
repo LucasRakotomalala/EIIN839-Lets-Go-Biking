@@ -4,6 +4,7 @@ using Routing.Services.External;
 using System;
 using System.Collections.Generic;
 using System.Device.Location;
+using System.Linq;
 using System.ServiceModel.Web;
 using System.Text.Json;
 
@@ -18,7 +19,7 @@ namespace Routing
         private readonly OpenRouteService openRouteService = new OpenRouteService();
 
         private static readonly List<Station> allStations = jCDecaux.GetStations().Result; //TODO: Update stations when specific ones are queried
-        private static readonly Dictionary<string, string> logs = new Dictionary<string, string>();
+        private static readonly Dictionary<(DateTime, int), (string, int)> logs = new Dictionary<(DateTime, int), (string, int)>();
 
         private static readonly int THRESHOLD_AVAILABLE_BIKES = 2;
         private static readonly int THRESHOLD_AVAILABLE_BIKES_STANDS = 2;
@@ -35,13 +36,13 @@ namespace Routing
 
         public Station GetStationInformations(string city, string stationNumber)
         {
-            return proxy.GetJCDecauxItem(city, stationNumber).Result.station; ;
+            return proxy.GetJCDecauxItem(city, stationNumber).Result.station;
         }
 
         public Position GetPosition(string address)
         {
             address = address.Trim();
-            if (address.Equals("null") || address.Equals(""))
+            if (address.Equals("null") || address.Equals(string.Empty))
             {
                 return null;
             }
@@ -128,7 +129,7 @@ namespace Routing
 
             if (nearestStation != null)
             {
-                logs.Add(string.Format("{0}@&#&#&@{1}", DateTime.Now, new Random().Next()), string.Format("{0}@&#&#&@{1}", nearestStation.contract_name, nearestStation.number));
+                logs.Add((DateTime.Now, new Random().Next()), (nearestStation.contract_name, nearestStation.number));
             }
 
             return nearestStation;
@@ -155,15 +156,20 @@ namespace Routing
 
             if (nearestStation != null)
             {
-                logs.Add(string.Format("{0}@&#&#&@{1}", DateTime.Now, new Random().Next()), string.Format("{0}@&#&#&@{1}", nearestStation.contract_name, nearestStation.number));
+                logs.Add((DateTime.Now, new Random().Next()), (nearestStation.contract_name, nearestStation.number));
             }
 
             return nearestStation;
         }
 
-        public Dictionary<string, string> GetLogs()
+        public Dictionary<(DateTime, int), (string, int)> GetLogs()
         {
             return logs;
+        }
+
+        public Dictionary<(DateTime, int), (string, int)> GetLogsByDays(int days)
+        {
+            return logs.Where(log => DateTime.Compare(DateTime.Now.AddDays(days * -1), log.Key.Item1) < 0).ToDictionary(log => log.Key, log => log.Value);
         }
 
         private GeoJson GetPath(Position[] positions, string profile)
