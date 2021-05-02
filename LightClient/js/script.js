@@ -191,7 +191,7 @@ const getPath = () => {
             const geoJSON = JSON.parse(this.responseText);
             pathLayer.addLayer(L.geoJSON(geoJSON));
             map.fitBounds(L.geoJSON(geoJSON).getBounds());
-            document.getElementById("path").innerHTML = "<h6>Détails sur l'itinéraire</h6><ul style=\"margin: 0; padding-inline-start: 10px; list-style:none;\"> <li> Durée : <strong>" + Math.round(((geoJSON.features[0].properties.summary.duration / 60) + Number.EPSILON) * 100) / 100 + " mn</strong></li> " + " <li>Distance: <strong>" + Math.round(((geoJSON.features[0].properties.summary.distance / 1000) + Number.EPSILON) * 100) / 100 + " km</strong></li></ul>";
+            document.getElementById("path").innerHTML = "<h6>Détails sur l'itinéraire</h6><ul style=\"margin: 0; padding-inline-start: 10px; list-style:none;\"> <li> Durée : <strong>" + new Date(geoJSON.features[0].properties.summary.duration * 1000).toISOString().substr(11, 8) + "</strong></li> " + " <li>Distance: <strong>" + Math.round(((geoJSON.features[0].properties.summary.distance / 1000) + Number.EPSILON) * 100) / 100 + " km</strong></li></ul>";
             document.getElementById("path").style.display = "block";
         }
     }

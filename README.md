@@ -16,13 +16,21 @@
     * Client console en `.Net Framework 4.7.2` pour démontrer certains fonctionnalités du `Routing`
     * Communication `SOAP` avec `Routing`
     * Exécutable de sortie utilisé pour créer l'[*image Docker*](#avec-une-version-dockerisée-de-la-solution-net)
+    * **Fonctionnalités :**
+        * Permet d'avoir la trajet entre un point *A* et un point *B* avec la prise de vélos lorsqu'utile
+        * Permet d'afficher les statistiques d'utilisation des stations des *x* derniers jours
+        * Permet d'exporter dans un fichier Excel (`stats.xls`) les statistiques d'utilisation des stations des *x* derniers jours
 
 * [`LightClient`](LightClient)
     * Client web en `HTML5/CSS3/JS`
         * pour démontrer certains fonctionnalités du `Routing`
         * avec une interface *responsive*
-            * et la présence d'une [`PWA`](https://web.dev/progressive-web-apps/) pour les utilisateurs mobiles
+            * et mise en place d'une [`PWA`](https://web.dev/progressive-web-apps/) pour les utilisateurs mobiles
     * Communication `REST` avec `Routing`
+    * **Fonctionnalités :**
+        * Permet d'avoir la trajet entre un point *A* et un point *B* avec la prise de vélos lorsqu'utile
+        * Permet d'obtenir le trajet entre la position de l'utilisateur et une station
+        * Permet d'afficher des informations relatives à une station
 
 * [`Proxy`](Proxy)
     * Bibliothèque de services `WCF`
@@ -44,7 +52,7 @@
 
 ## Récupération des sources
 
-* Depuis `Git` :
+* Depuis `Github` :
 ```bash
 $ git clone https://github.com/LucasRakotomalala/EIIN839-Lets-Go-Biking.git "Let's Go Biking"
 $ cd "Let's Go Biking"
@@ -52,7 +60,7 @@ $ cd "Let's Go Biking"
 
 **OU**
 
-* En téléchargeant les sources puis en extrayant l'archive alors obtenue
+* En téléchargeant les sources puis en extrayant l'archive
 
 ## Exécution du projet
 
