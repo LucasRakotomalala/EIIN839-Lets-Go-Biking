@@ -52,7 +52,7 @@
 
 ## Récupération des sources
 
-* Depuis `Github` :
+* En l'invité de commandes :
 ```bash
 $ git clone https://github.com/LucasRakotomalala/EIIN839-Lets-Go-Biking.git "Let's Go Biking"
 $ cd "Let's Go Biking"
